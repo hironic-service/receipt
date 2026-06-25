@@ -614,7 +614,6 @@
 
                         <input type="hidden" id="input-media-link" name="entry.1067959635">
                     </div>
-                    <div class="h-28 sm:hidden"></div>
                 </div>
 
                 <!-- ================= STEP 4: SECTION 7 (HIRONIC 20주년 프로모션 데모) ================= -->
@@ -677,7 +676,6 @@
                             </label>
                         </div>
                     </div>
-                    <div class="h-28 sm:hidden"></div>
                 </div>
 
                 <!-- Form Dynamic Control Button & Navigation bar footer (Sticky Bottom on Mobile) -->
@@ -758,7 +756,10 @@
         }
 
         function closeCustomAlert() {
-            document.getElementById('custom-alert').classList.add('hidden');
+            const customAlert = document.getElementById('custom-alert');
+            if (customAlert) {
+                customAlert.classList.add('hidden');
+            }
         }
 
         // 입력 라이브 피드백
@@ -858,6 +859,7 @@
                         if (groupChoice === '__other_option__' && etcCart) score += 10;
                         else if (groupChoice && groupChoice !== '__other_option__') score += 10;
                     } else if (q5 === "핸드피스") {
+                        // 중복 재선언 버그 해결
                         groupChoice = getCheckedRadioValue('entry.1206119229');
                         subName = document.getElementById('input-hp-name')?.value?.trim() || '';
                         subSerial = document.getElementById('input-hp-serial')?.value?.trim() || '';
@@ -952,6 +954,16 @@
             document.getElementById('real-file-input')?.click();
         }
 
+        // 파일 용량 단위 변환 헬퍼 함수 (전송 텍스트 렌더링 정상 가동을 위해 스코프 내 선언 보장)
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
         function handleFileSelection(input) {
             const files = input.files;
             if (!files || !files.length) return;
@@ -982,7 +994,8 @@
                     status: 'uploading',
                     progress: 0,
                     url: '',
-                    file: file
+                    file: file,
+                    thumbnailUrl: '' // 중복 URL 생성을 막기 위한 고유 캐시 주소 슬롯 탑재
                 };
 
                 uploadedFiles.push(newFileObj);
@@ -998,6 +1011,240 @@
             } else if (skippedLargeFiles) {
                 openCustomAlert("파일당 최대 크기는 100MB입니다. 초과된 파일은 자동 제외되었습니다.");
             }
+        }
+
+        // [3중 예외 처리 기술형] 클라우드 업로드 실제 엔진 탑재 (CORS 및 API 다운 전면 대비)
+        async function uploadFileToCloud(fileObj) {
+            const uploadServers = [
+                {
+                    name: 'pixeldrain',
+                    url: 'https://pixeldrain.com/api/file',
+                    fileParam: 'file',
+                    parseResponse: (text) => {
+                        const res = JSON.parse(text);
+                        if (res.success && res.id) {
+                            return `https://pixeldrain.com/api/file/${res.id}`;
+                        }
+                        throw new Error('Pixeldrain invalid response');
+                    }
+                },
+                {
+                    name: 'tmpfiles',
+                    url: 'https://tmpfiles.org/api/v1/upload',
+                    fileParam: 'file',
+                    parseResponse: (text) => {
+                        const res = JSON.parse(text);
+                        if (res.status === 'success' && res.data && res.data.url) {
+                            let url = res.data.url;
+                            if (url.includes('tmpfiles.org/')) {
+                                url = url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+                            }
+                            return url;
+                        }
+                        throw new Error('Tmpfiles invalid response');
+                    }
+                },
+                {
+                    name: 'fileio',
+                    url: 'https://file.io',
+                    fileParam: 'file',
+                    parseResponse: (text) => {
+                        const res = JSON.parse(text);
+                        if (res.success && res.link) {
+                            return res.link;
+                        }
+                        throw new Error('File.io invalid response');
+                    }
+                }
+            ];
+
+            async function tryUpload(serverIndex) {
+                if (serverIndex >= uploadServers.length) {
+                    throw new Error('All upload servers failed');
+                }
+
+                const server = uploadServers[serverIndex];
+                const formData = new FormData();
+                formData.append(server.fileParam, fileObj.file);
+
+                return new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', server.url, true);
+
+                    xhr.upload.onprogress = function(e) {
+                        if (e.lengthComputable) {
+                            const percentComplete = Math.round((e.loaded / e.total) * 100);
+                            const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
+                            if (fileIndex !== -1) {
+                                uploadedFiles[fileIndex].progress = percentComplete;
+                                renderFileList();
+                            }
+                        }
+                    };
+
+                    xhr.onload = function() {
+                        if (xhr.status === 200 || xhr.status === 201) {
+                            try {
+                                const downloadUrl = server.parseResponse(xhr.responseText);
+                                resolve(downloadUrl);
+                            } catch (err) {
+                                reject(err);
+                            }
+                        } else {
+                            reject(new Error(`Server returned status ${xhr.status}`));
+                        }
+                    };
+
+                    xhr.onerror = function() {
+                        reject(new Error('Network error'));
+                    };
+
+                    xhr.send(formData);
+                });
+            }
+
+            // 순차적 Cascading 업로드 트리거
+            try {
+                let finalUrl = "";
+                try {
+                    // 1. Pixeldrain 시도 (CORS 허용, 보존기간 김)
+                    finalUrl = await tryUpload(0);
+                } catch (e1) {
+                    console.warn("Primary upload failed, trying fallback 1 (tmpfiles):", e1);
+                    try {
+                        // 2. TmpFiles 시도
+                        finalUrl = await tryUpload(1);
+                    } catch (e2) {
+                        console.warn("Fallback 1 failed, trying fallback 2 (file.io):", e2);
+                        // 3. File.io 시도
+                        finalUrl = await tryUpload(2);
+                    }
+                }
+
+                const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
+                if (fileIndex !== -1) {
+                    uploadedFiles[fileIndex].status = 'success';
+                    uploadedFiles[fileIndex].url = finalUrl;
+                    renderFileList();
+                    updateFormFileMetadata();
+                }
+            } catch (error) {
+                console.error("Cascading file upload completely failed:", error);
+                const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
+                if (fileIndex !== -1) {
+                    uploadedFiles[fileIndex].status = 'error';
+                    renderFileList();
+                    updateFormFileMetadata();
+                }
+            }
+        }
+
+        // 업로드 파일 제거 로직 완전 탑재 (메모리 누수 차단)!
+        function removeUploadedFile(fileId) {
+            const index = uploadedFiles.findIndex(f => f.id === fileId);
+            if (index !== -1) {
+                const file = uploadedFiles[index];
+                if (file.thumbnailUrl) {
+                    URL.revokeObjectURL(file.thumbnailUrl);
+                }
+                uploadedFiles.splice(index, 1);
+                renderFileList();
+                updateFormFileMetadata();
+            }
+        }
+
+        // [중요 고도화]: 썸네일 재성 생성 플리커링 오류를 해소한 실시간 업로드 현황 렌더러 완전 탑재!
+        function renderFileList() {
+            const container = document.getElementById('file-list-container');
+            if (!container) return;
+            container.innerHTML = "";
+
+            if (uploadedFiles.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+
+            uploadedFiles.forEach((file) => {
+                const item = document.createElement('div');
+                item.className = "flex flex-col gap-2.5 p-3.5 bg-hironic-ivory border border-[#EBE6DD] rounded-2xl fade-in shadow-sm";
+                
+                const isImage = file.type.startsWith('image/');
+                const isVideo = file.type.startsWith('video/');
+                
+                // 이미지 파일인 경우 고유 객체 주소를 1회만 캐싱하여 재사용 (업로드 Progress 변경 시 깜빡임 버그 영구 해결)
+                let thumbnailHTML = "";
+                if (isImage && file.file) {
+                    if (!file.thumbnailUrl) {
+                        file.thumbnailUrl = URL.createObjectURL(file.file);
+                    }
+                    thumbnailHTML = `
+                        <div class="w-14 h-14 rounded-xl overflow-hidden border border-gray-200 shrink-0 bg-gray-50 flex items-center justify-center">
+                            <img src="${file.thumbnailUrl}" class="w-full h-full object-cover" />
+                        </div>
+                    `;
+                } else {
+                    const iconClass = isVideo ? "fa-regular fa-file-video text-hironic-gold text-2xl" : "fa-regular fa-file-lines text-hironic-gold text-2xl";
+                    thumbnailHTML = `
+                        <div class="w-14 h-14 rounded-xl border border-gray-200 shrink-0 bg-gray-50 flex items-center justify-center">
+                            <i class="${iconClass}"></i>
+                        </div>
+                    `;
+                }
+
+                let statusHTML = "";
+                if (file.status === 'uploading') {
+                    statusHTML = `
+                        <div class="flex items-center gap-2 text-xs text-hironic-gold font-medium">
+                            <i class="fa-solid fa-circle-notch animate-spin"></i>
+                            <span>클라우드 전송 중 (${file.progress}%)</span>
+                        </div>
+                    `;
+                } else if (file.status === 'success') {
+                    statusHTML = `
+                        <div class="flex items-center gap-2 text-xs text-green-600 font-semibold">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>클라우드 연동 완료</span>
+                            <a href="${file.url}" target="_blank" class="hover:underline text-[11px] flex items-center gap-1 text-hironic-gold font-bold ml-1">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> 사진 보기
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    statusHTML = `
+                        <span class="text-xs text-red-500 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-triangle-exclamation"></i> 업로드 실패 (네트워크 확인)
+                        </span>
+                    `;
+                }
+
+                item.innerHTML = `
+                    <div class="flex items-center justify-between gap-3 min-w-0">
+                        <div class="flex items-center gap-3.5 min-w-0">
+                            ${thumbnailHTML}
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-xs md:text-sm font-semibold text-hironic-charcoal truncate">${file.name}</span>
+                                <span class="text-[10px] md:text-[11px] text-gray-400 font-medium">${formatBytes(file.size)}</span>
+                            </div>
+                        </div>
+                        <button type="button" onclick="removeUploadedFile('${file.id}')" class="text-gray-400 hover:text-red-500 p-1.5 transition-colors duration-150 shrink-0">
+                            <i class="fa-solid fa-xmark text-sm"></i>
+                        </button>
+                    </div>
+                    <!-- 상태 정보 및 프로그레스 표시 영역 -->
+                    <div class="flex items-center justify-between border-t border-gray-100/60 pt-2.5 mt-1">
+                        ${statusHTML}
+                        ${file.status === 'uploading' ? `
+                        <div class="w-24 bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                            <div class="bg-hironic-gold h-full" style="width: ${file.progress}%"></div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+            container.classList.remove('hidden');
         }
 
         // 각 섹션별 엄격한 유효성 체크 및 다단계 네비게이션 제어
@@ -1347,6 +1594,33 @@
                     handleSuccessTransition();
                 }, 1200);
             }
+        }
+
+        function handleFormFileMetadata() {
+            updateFormFileMetadata();
+        }
+
+        function updateFormFileMetadata() {
+            const metaInput = document.getElementById('input-media-link');
+            if (!metaInput) return;
+            if (uploadedFiles.length === 0) {
+                metaInput.value = "첨부파일 없음"; // 구글 폼 필수 설정 오류를 방지하기 위해 빈 값이 아닌 디폴트 텍스트 바인딩
+                metaInput.classList.remove('border-red-500');
+            } else {
+                const fileUrls = uploadedFiles
+                    .filter(f => f.status === 'success' && f.url)
+                    .map((f, idx) => `${idx + 1}. [사진다운로드] ${f.url}`);
+                
+                const uploadingCount = uploadedFiles.filter(f => f.status === 'uploading').length;
+                let finalVal = fileUrls.join(" \n");
+                if (uploadingCount > 0) {
+                    finalVal += `\n (기타 ${uploadingCount}개 파일 전송 중...)`;
+                }
+
+                metaInput.value = finalVal;
+                metaInput.classList.remove('border-red-500');
+            }
+            updateProgress();
         }
 
         function handleIframeOnload() {
