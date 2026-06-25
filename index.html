@@ -119,7 +119,7 @@
 </head>
 <body class="bg-[#FAF6F0] min-h-screen font-sans text-hironic-charcoal antialiased p-4 md:p-8">
 
-    <!-- 배후 전송용 히든 Iframe -->
+    <!-- 배후 전송용 히든 Iframe (onload는 백업용으로 유지하되 메인 흐름은 타이머 동기화로 이중 트리거 방지) -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { handleSuccessTransition(); }"></iframe>
 
     <!-- 전체 레이아웃 컨테이너 -->
@@ -175,6 +175,7 @@
                 </div>
 
                 <!-- ================= STEP 1: SECTION 1 (공통 기본 인적사항) ================= -->
+                <!-- 모바일 사파리/크롬의 display:none 상태에서의 'required' 초점 불가 오류 방지를 위해 네이티브 required 속성 일괄 제거 -->
                 <div id="step-1" class="flex flex-col gap-6 fade-in">
                     
                     <!-- Question 1: Hospital Name -->
@@ -183,7 +184,7 @@
                             1. 병 / 의원 <span class="text-red-500 ml-0.5">*</span>
                         </label>
                         <p class="text-xs text-gray-400 mb-4">신속한 서비스를 위해 병/의원명을 정확히 입력해 주세요</p>
-                        <input type="text" id="input-hospital-name" name="entry.1151304436" required oninput="handleInputLive(this)" placeholder="예) 하이로닉 병원" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
+                        <input type="text" id="input-hospital-name" name="entry.1151304436" oninput="handleInputLive(this)" placeholder="예) 하이로닉 병원" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
 
                     <!-- Question 2: Location -->
@@ -192,7 +193,7 @@
                             2. 병 / 의원 위치 <span class="text-red-500 ml-0.5">*</span>
                         </label>
                         <p class="text-xs text-gray-400 mb-4">병/의원의 정확한 위치 확인을 위해 시/군/구를 입력해 주세요</p>
-                        <input type="text" id="input-hospital-location" name="entry.1623859406" required oninput="handleInputLive(this)" placeholder="예) 경기도 용인시 수지구" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
+                        <input type="text" id="input-hospital-location" name="entry.1623859406" oninput="handleInputLive(this)" placeholder="예) 경기도 용인시 수지구" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
 
                     <!-- Question 3: Submitter Name -->
@@ -201,7 +202,7 @@
                             3. 접수자 성명 <span class="text-red-500 ml-0.5">*</span>
                         </label>
                         <p class="text-xs text-gray-400 mb-4">빠른 연락을 위해 접수자의 성명을 입력해 주세요.</p>
-                        <input type="text" id="input-contact-name" name="entry.1665891340" required oninput="handleInputLive(this)" placeholder="예) 김하이로닉" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
+                        <input type="text" id="input-contact-name" name="entry.1665891340" oninput="handleInputLive(this)" placeholder="예) 김하이로닉" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
 
                     <!-- Question 4: Phone Number -->
@@ -210,7 +211,7 @@
                             4. 연락처 (휴대폰 번호) <span class="text-red-500 ml-0.5">*</span>
                         </label>
                         <p class="text-xs text-gray-400 mb-4">연락받으실 휴대폰 번호를 입력해 주세요.</p>
-                        <input type="tel" id="input-contact-phone" name="entry.1324620204" required oninput="handleInputLive(this)" placeholder="예) 01012345678" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
+                        <input type="tel" id="input-contact-phone" name="entry.1324620204" oninput="handleInputLive(this)" placeholder="예) 01012345678" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
 
                     <!-- Question 5: Faulty Product Type -->
@@ -222,7 +223,7 @@
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="faulty-product-container">
                             <label class="choice-label flex items-center gap-3.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-goldLight/40 hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
-                                <input type="radio" name="entry.1658877534" value="장비" onclick="handleFaultyProductChoice(this)" class="custom-radio-input" required>
+                                <input type="radio" name="entry.1658877534" value="장비" onclick="handleFaultyProductChoice(this)" class="custom-radio-input">
                                 <span class="text-sm font-medium text-gray-700">장비</span>
                             </label>
                             <label class="choice-label flex items-center gap-3.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-goldLight/40 hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
@@ -441,7 +442,7 @@
                             </label>
                             
                             <!-- 인라인 기타 카드 -->
-                            <label class="choice-label flex items-center gap-2.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-gold/40 transition-all duration-200 select-none col-span-1">
+                            <label class="choice-label flex items-center gap-2.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
                                 <input type="radio" id="radio-hp-etc" name="entry.1206119229" value="__other_option__" onclick="handleRadioWithEtc(this, 'etc-hp')" class="custom-radio-input">
                                 <span class="text-sm font-medium text-gray-700 shrink-0">기타:</span>
                                 <input type="text" id="etc-hp" name="entry.1206119229.other_option_response" disabled oninput="handleInputLive(this)" placeholder="직접 기입" class="flex-1 min-w-0 px-2 py-1 bg-white border border-[#EBE6DD] rounded-xl text-xs outline-none focus:border-hironic-gold disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-200">
@@ -698,6 +699,7 @@
 
     <script>
         let submitted = false;
+        let successTransitioned = false; // 성공 화면 이중 전환 방지 플래그
         let currentStep = 1; 
         let uploadedFiles = []; // 업로드된 파일 객체 관리 배열 (최대 10개)
 
@@ -1322,7 +1324,7 @@
                 if (uploadedFiles.length > 0) {
                     const isAnyUploading = uploadedFiles.some(f => f.status === 'uploading');
                     if (isAnyUploading) {
-                        openCustomAlert("아직 사진의 고해상도 연동이 완료되지 않았습니다. 잠시만 기다려 주세요.");
+                        openCustomAlert("아직 사진의 고해상도 연동이 완료되지 않았습니다. 전송 완료 후 다음으로 가실 수 있습니다.");
                         return false;
                     }
                 }
@@ -1660,10 +1662,17 @@
 
             submitted = true;
             form.submit();
+
+            // [모바일 대응 핵심 고도화]: 크로스도메인 iframe 로드를 모바일 브라우저나 인앱 브라우저가 강제 차단하더라도, 
+            // 실제 HTTP POST 요청은 전송 완료되므로 400ms 후 비동기적으로 확실하게 성공화면으로 무조건 전환시킵니다.
+            setTimeout(() => {
+                handleSuccessTransition();
+            }, 400);
         }
 
         function handleSuccessTransition() {
-            if (!submitted) return;
+            if (successTransitioned) return; // 중복 실행 방지
+            successTransitioned = true;
             document.getElementById('formContainer').classList.add('hidden');
             document.getElementById('successScreen').classList.remove('hidden');
         }
@@ -1693,6 +1702,7 @@
 
         function resetForm() {
             submitted = false;
+            successTransitioned = false;
             uploadedFiles = [];
             renderFileList();
             updateFormFileMetadata();
