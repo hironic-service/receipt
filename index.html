@@ -555,7 +555,7 @@
                     <!-- Q11: 사진 및 동영상 파일 업로드 (image_055e7f.png 매칭형으로 완전 교체!) -->
                     <div class="card-question bg-white rounded-3xl p-6 md:p-8 shadow-[0_4px_20px_rgba(30,34,41,0.03)] border border-hironic-border transition-all duration-300">
                         <label class="block text-base md:text-lg font-bold text-hironic-charcoal mb-1">
-                            11. 사진 및 동영상 <span class="text-red-500 ml-0.5">*</span>
+                            11. 사진 및 동영상 <span class="text-[#1a73e8] text-xs font-normal ml-1 bg-[#e8f0fe] px-2 py-0.5 rounded-full">(선택)</span>
                         </label>
                         <p class="text-xs text-gray-400 mb-1 leading-relaxed">증상에 대한 사진이나 영상을 첨부해 주시면 보다 빠른 증상 파악이 가능합니다.</p>
                         <p class="text-xs text-gray-400/80 mb-5">지원되는 파일을 최대 10개까지 업로드하세요. 파일당 최대 크기는 100 MB입니다.</p>
@@ -573,7 +573,7 @@
                             </button>
 
                             <!-- 업로드 완료된 파일 리스트 카드 영역 -->
-                            <div id="file-list-container" class="hidden flex flex-col gap-2.5 mt-2 max-h-[350px] overflow-y-auto custom-scrollbar">
+                            <div id="file-list-container" class="hidden flex flex-col gap-2.5 mt-2 max-h-[300px] overflow-y-auto custom-scrollbar">
                                 <!-- 업로드 항목이 이곳에 동적으로 렌더링됩니다 -->
                             </div>
                         </div>
@@ -1317,20 +1317,15 @@
                     step3Valid = false;
                 }
                 
-                if (uploadedFiles.length === 0) {
-                    const uploadBtn = document.querySelector('button[onclick="triggerFileSelect()"]');
-                    uploadBtn.classList.add('shake');
-                    setTimeout(() => uploadBtn.classList.remove('shake'), 400);
-                    step3Valid = false;
-                    openCustomAlert("장비 고장 증상을 확인해 드리기 위해 증상 사진/동영상을 최소 1개 이상 올려 주세요.");
-                    return false;
-                }
+                // 11번이 선택 사항이므로 파일 개수가 0개일 때의 에러 체크 제거
 
-                // 백그라운드 업로드가 진행 중인 파일이 있는지 최종 검사
-                const isAnyUploading = uploadedFiles.some(f => f.status === 'uploading');
-                if (isAnyUploading) {
-                    openCustomAlert("아직 일부 사진의 고해상도 변환 및 업로드가 진행 중입니다. 전송 완료 후 다음으로 가실 수 있습니다.");
-                    return false;
+                // 파일이 등록되어 있을 때만 백그라운드 업로드 진행 상태 최종 검사 수행
+                if (uploadedFiles.length > 0) {
+                    const isAnyUploading = uploadedFiles.some(f => f.status === 'uploading');
+                    if (isAnyUploading) {
+                        openCustomAlert("아직 일부 사진의 고해상도 변환 및 업로드가 진행 중입니다. 전송 완료 후 다음으로 가실 수 있습니다.");
+                        return false;
+                    }
                 }
 
                 if (!step3Valid) {
@@ -1542,8 +1537,8 @@
                 ],
                 '카트리지': [
                     { name: 'entry.2022084396', fallback: '-' },
-                    { name: 'entry.186327438', fallback: '-' },
                     { name: 'entry.2112091891', fallback: '-' },
+                    { name: 'entry.186327438', fallback: '-' },
                     { name: 'entry.1226825078', fallback: '-' }
                 ],
                 '핸드피스': [
