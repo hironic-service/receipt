@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HIRONIC 서비스 접수 시스템</title>
+    <title>HIRONIC 서비스 접수 Systems</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Noto Sans KR & Playfair Display -->
@@ -311,7 +311,7 @@
                         <label class="block text-base md:text-lg font-bold text-hironic-charcoal mb-1">
                             8. 시리얼 번호 <span class="text-red-500 ml-0.5">*</span>
                         </label>
-                        <p class="text-xs text-gray-400 mb-4">제품 뒤 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수에 제한이 될 수 있습니다.)</p>
+                        <p class="text-xs text-gray-400 mb-4">제품 뒤 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수가 제한이 될 수 있습니다.)</p>
                         <input type="text" id="input-eq-serial" name="entry.137691596" oninput="handleInputLive(this)" placeholder="예) HVR00000000" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
 
@@ -441,7 +441,7 @@
                             </label>
                             
                             <!-- 인라인 기타 카드 -->
-                            <label class="choice-label flex items-center gap-2.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
+                            <label class="choice-label flex items-center gap-2.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-gold/40 transition-all duration-200 select-none col-span-1">
                                 <input type="radio" id="radio-hp-etc" name="entry.1206119229" value="__other_option__" onclick="handleRadioWithEtc(this, 'etc-hp')" class="custom-radio-input">
                                 <span class="text-sm font-medium text-gray-700 shrink-0">기타:</span>
                                 <input type="text" id="etc-hp" name="entry.1206119229.other_option_response" disabled oninput="handleInputLive(this)" placeholder="직접 기입" class="flex-1 min-w-0 px-2 py-1 bg-white border border-[#EBE6DD] rounded-xl text-xs outline-none focus:border-hironic-gold disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-200">
@@ -518,7 +518,7 @@
                         <label class="block text-base md:text-lg font-bold text-hironic-charcoal mb-1">
                             7. 고장 팁 or 노즐 제품명 <span class="text-red-500 ml-0.5">*</span>
                         </label>
-                        <p class="text-xs text-gray-400 mb-4">서비스 접수가 필요한 팁 or 노즐의 제품명을 입력해 주세요.</p>
+                        <p class="text-xs text-gray-400 mb-4">팁 or 노즐의 제품명을 입력해 주세요.</p>
                         <input type="text" id="input-tip-name" name="entry.890467631" oninput="handleInputLive(this)" placeholder="예) N-45" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
 
@@ -552,7 +552,7 @@
                         <textarea id="input-detailed-text" name="entry.507533110" rows="6" oninput="handleInputLive(this)" placeholder="증상을 최소 5자 이상 자유롭고 자세하게 적어 주시기 바랍니다." class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base resize-none"></textarea>
                     </div>
 
-                    <!-- Q11: 사진 및 동영상 파일 업로드 (image_055e7f.png 매칭형으로 완전 교체!) -->
+                    <!-- Q11: 사진 및 동영상 파일 업로드 (선택 사항) -->
                     <div class="card-question bg-white rounded-3xl p-6 md:p-8 shadow-[0_4px_20px_rgba(30,34,41,0.03)] border border-hironic-border transition-all duration-300">
                         <label class="block text-base md:text-lg font-bold text-hironic-charcoal mb-1">
                             11. 사진 및 동영상 <span class="text-[#1a73e8] text-xs font-normal ml-1 bg-[#e8f0fe] px-2 py-0.5 rounded-full">(선택)</span>
@@ -573,7 +573,7 @@
                             </button>
 
                             <!-- 업로드 완료된 파일 리스트 카드 영역 -->
-                            <div id="file-list-container" class="hidden flex flex-col gap-2.5 mt-2 max-h-[300px] overflow-y-auto custom-scrollbar">
+                            <div id="file-list-container" class="hidden flex flex-col gap-2.5 mt-2 max-h-[350px] overflow-y-auto custom-scrollbar">
                                 <!-- 업로드 항목이 이곳에 동적으로 렌더링됩니다 -->
                             </div>
                         </div>
@@ -683,12 +683,14 @@
             <div class="w-20 h-20 bg-hironic-goldLight rounded-full flex items-center justify-center text-hironic-goldDark text-3xl mb-6 shadow-sm">
                 <i class="fa-solid fa-check-double"></i>
             </div>
-            <h2 class="text-2xl md:text-3xl font-black text-hironic-charcoal mb-3">장비 서비스 접수가 완료되었습니다.</h2>
+            <!-- 요청 문양에 맞게 제목 수정 -->
+            <h2 class="text-2xl md:text-3xl font-black text-hironic-charcoal mb-3">서비스 접수가 완료되었습니다.</h2>
             <p class="text-gray-500 max-w-md mx-auto mb-8 text-sm leading-relaxed">
                 보내주신 접수 내역을 확인한 엔지니어가 신속하게 세부 장비 이력을 검토한 후, 조속한 기일 내에 유선 연락 및 현장 일정을 확정해 드리겠습니다.
             </p>
-            <button onclick="resetForm()" class="px-6 py-3 bg-hironic-gold text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-hironic-goldDark transition-colors shadow-sm select-none">
-                추가 접수 및 리셋하기
+            <!-- 요청 문양에 맞게 닫기 액션으로 버튼 교체 -->
+            <button onclick="terminateProcess()" class="px-10 py-3 bg-[#c7a66b] text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-hironic-goldDark transition-colors shadow-sm select-none">
+                닫기
             </button>
         </div>
 
@@ -1188,14 +1190,13 @@
         function updateFormFileMetadata() {
             const metaInput = document.getElementById('input-media-link');
             if (uploadedFiles.length === 0) {
-                metaInput.value = "";
+                metaInput.value = "첨부파일 없음"; // 구글 폼 필수 설정 오류를 방지하기 위해 빈 값이 아닌 디폴트 텍스트 바인딩
                 metaInput.classList.remove('border-red-500');
             } else {
                 const fileUrls = uploadedFiles
                     .filter(f => f.status === 'success' && f.url)
                     .map((f, idx) => `${idx + 1}. [사진다운로드] ${f.url}`);
                 
-                // 만약 아직 업로드 중인 파일이 있다면 별도 기록
                 const uploadingCount = uploadedFiles.filter(f => f.status === 'uploading').length;
                 let finalVal = fileUrls.join(" \n");
                 if (uploadingCount > 0) {
@@ -1316,14 +1317,12 @@
                     setTimeout(() => q10.classList.remove('shake'), 400);
                     step3Valid = false;
                 }
-                
-                // 11번이 선택 사항이므로 파일 개수가 0개일 때의 에러 체크 제거
 
                 // 파일이 등록되어 있을 때만 백그라운드 업로드 진행 상태 최종 검사 수행
                 if (uploadedFiles.length > 0) {
                     const isAnyUploading = uploadedFiles.some(f => f.status === 'uploading');
                     if (isAnyUploading) {
-                        openCustomAlert("아직 일부 사진의 고해상도 변환 및 업로드가 진행 중입니다. 전송 완료 후 다음으로 가실 수 있습니다.");
+                        openCustomAlert("아직 사진의 고해상도 연동이 완료되지 않았습니다. 잠시만 기다려 주세요.");
                         return false;
                     }
                 }
@@ -1445,11 +1444,12 @@
             const q4 = document.getElementById('input-contact-phone').value.trim();
             const q5 = getCheckedRadioValue('entry.1658877534');
 
-            if (q1) score += 5;
-            if (q2) score += 5;
-            if (q3) score += 5;
-            if (q4) score += 5;
-            if (q5) score += 5;
+            // 기본 정보 5문항: 각각 6점 가중치로 총 30점 할당
+            if (q1) score += 6;
+            if (q2) score += 6;
+            if (q3) score += 6;
+            if (q4) score += 6;
+            if (q5) score += 6;
 
             if (q5) {
                 if (q5 === "기타 소모품") {
@@ -1496,17 +1496,17 @@
                 }
             }
 
+            // 10번 상세 접수 내용 입력: 15점 가중치 부여 (11번 문항이 빠짐에 따라 재조정)
             const q10 = document.getElementById('input-detailed-text').value.trim();
             if (q10.length >= 5) {
-                score += 10;
+                score += 15;
             } else if (q10.length > 0) {
-                score += 3;
+                score += 5;
             }
 
-            if (uploadedFiles.length > 0) {
-                score += 10;
-            }
+            // [수정 사항]: 11번 사진 및 동영상 파일 업로드는 선택(Optional) 문항이므로 진척도 점수 계산에서 전면 제외(0점)
 
+            // 데모 신청 여부: 15점 가중치 부여
             const demoChoice = getCheckedRadioValue('entry.1831314282');
             if (demoChoice === '__other_option__' && document.getElementById('etc-demo').value.trim()) {
                 score += 15;
@@ -1514,57 +1514,89 @@
                 score += 15;
             }
 
+            // 총합 가중치 100% 한계치 매핑
             const percent = Math.min(Math.round(score), 100);
             document.getElementById('progBar').style.width = percent + '%';
             document.getElementById('progText').innerText = percent + '%';
         }
 
-        // 비활성화 및 미작성 섹션의 구글 필수 문항에 임의의 "-" 값을 인젝션하는 우회 로직 (필수!)
-        function fillInactiveFieldsWithPlaceholder() {
+        // 비활성화 및 미선택 섹션의 구글 필수 데이터 중복 및 유실 검사를 통과시키는 지능형 폼 정합성 매핑 함수
+        function prepareFormForSubmission() {
             const productType = getCheckedRadioValue('entry.1658877534');
             const form = document.getElementById('hironicCustomForm');
             
-            // 기존 전송 데이터 복구를 위해 이전에 삽입한 플레이스홀더 히든 엘리먼트 제거
+            // 1. 혹시 남아있을 수 있는 이전 임시 플레이스홀더 히든 인풋 완전 삭제
             const oldPlaceholders = form.querySelectorAll('.submission-placeholder');
             oldPlaceholders.forEach(el => el.remove());
 
-            const sectionFields = {
-                '장비': [
-                    { name: 'entry.478248741', fallback: '-' },
-                    { name: 'entry.1338509668', fallback: '-' },
-                    { name: 'entry.137691596', fallback: '-' },
-                    { name: 'entry.611804549', fallback: '-' }
-                ],
-                '카트리지': [
-                    { name: 'entry.2022084396', fallback: '-' },
-                    { name: 'entry.2112091891', fallback: '-' },
-                    { name: 'entry.186327438', fallback: '-' },
-                    { name: 'entry.1226825078', fallback: '-' }
-                ],
-                '핸드피스': [
-                    { name: 'entry.1206119229', fallback: '-' },
-                    { name: 'entry.60920181', fallback: '-' },
-                    { name: 'entry.2086382309', fallback: '-' },
-                    { name: 'entry.988708164', fallback: '-' }
-                ],
-                '팁 or 노즐': [
-                    { name: 'entry.284306670', fallback: '-' },
-                    { name: 'entry.890467631', fallback: '-' },
-                    { name: 'entry.769820055', fallback: '-' },
-                    { name: 'entry.602978248', fallback: '-' }
-                ]
+            // 2. 모든 섹션의 인풋 요소의 기본 전송 속성(disabled 해제) 초기화
+            const allFormInputs = form.querySelectorAll('input, textarea');
+            allFormInputs.forEach(input => {
+                if (!input.id.startsWith('etc-')) {
+                    input.disabled = false;
+                }
+            });
+
+            // 각 선택 분기별 파라미터 구조 정의
+            const sections = {
+                '장비': {
+                    radioName: 'entry.478248741',
+                    radioEtcId: 'etc-eq',
+                    textIds: ['input-eq-name', 'input-eq-serial', 'input-eq-usage']
+                },
+                '카트리지': {
+                    radioName: 'entry.2022084396',
+                    radioEtcId: 'etc-cart',
+                    textIds: ['input-cart-name', 'input-cart-serial', 'input-cart-usage']
+                },
+                '핸드피스': {
+                    radioName: 'entry.1206119229',
+                    radioEtcId: 'etc-hp',
+                    textIds: ['input-hp-name', 'input-hp-serial', 'input-hp-usage']
+                },
+                '팁 or 노즐': {
+                    radioName: 'entry.284306670',
+                    radioEtcId: 'etc-tip',
+                    textIds: ['input-tip-name', 'input-tip-serial', 'input-tip-usage']
+                }
             };
 
-            // 선택된 카테고리를 제외한 모든 비활성 필드에 필수조건 통과용 "-" 가상 바인딩
-            Object.keys(sectionFields).forEach(type => {
-                if (type !== productType) {
-                    sectionFields[type].forEach(field => {
-                        const hiddenInput = document.createElement('input');
-                        hiddenInput.type = 'hidden';
-                        hiddenInput.className = 'submission-placeholder';
-                        hiddenInput.name = field.name;
-                        hiddenInput.value = field.fallback;
-                        form.appendChild(hiddenInput);
+            // 3. 섹션 파라미터 루프를 돌며 비활성 영역과 활성 영역의 전송 데이터를 단일 키(No-Duplicate) 구조로 완전 매칭
+            Object.keys(sections).forEach(type => {
+                const sec = sections[type];
+                if (type === productType) {
+                    // [활성 섹션]: 실제 전송되도록 데이터 속성 보존
+                    const radios = document.querySelectorAll(`input[name="${sec.radioName}"]`);
+                    radios.forEach(r => r.disabled = false);
+
+                    const checkedRadio = document.querySelector(`input[name="${sec.radioName}"]:checked`);
+                    if (checkedRadio && checkedRadio.value === '__other_option__') {
+                        document.getElementById(sec.radioEtcId).disabled = false;
+                    }
+                } else {
+                    // [비활성 섹션]: 구글 폼 필수 조건 우회를 위해 데이터 일괄 바인딩
+                    // 기존 동일명 라디오를 일시적 비활성화(disabled)하여 파라미터 중복 충돌 차단
+                    const radios = document.querySelectorAll(`input[name="${sec.radioName}"]`);
+                    radios.forEach(r => r.disabled = true);
+
+                    const etcInput = document.getElementById(sec.radioEtcId);
+                    if (etcInput) etcInput.disabled = true;
+
+                    // 단 하나의 단독 히든 플레이스홀더를 동적 생성하여 안전하게 연동
+                    const hiddenRadioPlaceholder = document.createElement('input');
+                    hiddenRadioPlaceholder.type = 'hidden';
+                    hiddenRadioPlaceholder.className = 'submission-placeholder';
+                    hiddenRadioPlaceholder.name = sec.radioName;
+                    hiddenRadioPlaceholder.value = '-';
+                    form.appendChild(hiddenRadioPlaceholder);
+
+                    // 텍스트 인풋들은 직접 해당 엘리먼트 값에 "-"를 입력시켜 이중 전송 오류 방지
+                    sec.textIds.forEach(id => {
+                        const txtInput = document.getElementById(id);
+                        if (txtInput) {
+                            txtInput.value = '-';
+                            txtInput.disabled = false; // 전송에 누락되지 않도록 enabled로 유지
+                        }
                     });
                 }
             });
@@ -1572,6 +1604,8 @@
 
         // 최종 제출 및 구글 폼 다중 데이터 전송 처리기
         function validateAndSubmit() {
+            if (submitted) return; // 중복 제출 방지
+
             const demoChoice = getCheckedRadioValue('entry.1831314282');
             if (!demoChoice) {
                 openCustomAlert("HIRONIC 20주년 특별 데모 프로모션에 대한 참여 혹은 관심없음 여부를 선택해 주세요.");
@@ -1588,10 +1622,16 @@
             const productType = getCheckedRadioValue('entry.1658877534');
             const form = document.getElementById('hironicCustomForm');
 
-            // 1. 구글 필수 문항 강제 유효성 통과 처리 활성화
-            fillInactiveFieldsWithPlaceholder();
+            // 1. 파일 첨부 결과가 비어있을 시 자동 디폴트 값 "첨부파일 없음" 인젝션 처리
+            const metaInput = document.getElementById('input-media-link');
+            if (!metaInput.value.trim()) {
+                metaInput.value = "첨부파일 없음";
+            }
 
-            // 2. 구글 폼 구조상 멀티 페이지 이정 제어
+            // 2. 구글 필수 문항 강제 유효성 통과 및 파라미터 충돌 회피 처리 실행
+            prepareFormForSubmission();
+
+            // 3. 구글 폼 구조상 멀티 페이지 이정 제어
             const existingHidden = document.querySelectorAll('.dynamic-page-history');
             existingHidden.forEach(el => el.remove());
 
@@ -1602,53 +1642,53 @@
 
             if (productType === "장비") {
                 pageHistoryInput.value = '0,1,5,6';
-                disableUnusedInputs(['cartridge', 'handpiece', 'tip']);
             } else if (productType === "카트리지") {
                 pageHistoryInput.value = '0,2,5,6';
-                disableUnusedInputs(['equipment', 'handpiece', 'tip']);
             } else if (productType === "핸드피스") {
                 pageHistoryInput.value = '0,3,5,6';
-                disableUnusedInputs(['equipment', 'cartridge', 'tip']);
             } else if (productType === "팁 or 노즐") {
                 pageHistoryInput.value = '0,4,5,6';
-                disableUnusedInputs(['equipment', 'cartridge', 'handpiece']);
             } else {
                 pageHistoryInput.value = '0,5,6';
-                disableUnusedInputs(['equipment', 'cartridge', 'handpiece', 'tip']);
             }
             form.appendChild(pageHistoryInput);
 
+            // 버튼 비활성화 및 전송 중 로딩 상태 표시 (이중 제출 원천 차단)
+            const btnSubmit = document.getElementById('btn-submit');
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = `전송 중... <i class="fa-solid fa-circle-notch animate-spin text-xs"></i>`;
+
             submitted = true;
             form.submit();
-        }
-
-        // 미사용 섹션 필드 비활성화 처리 (구글 설문 불필요 빈 항목 유입 방지)
-        function disableUnusedInputs(sectionsToDisable) {
-            sectionsToDisable.forEach(sec => {
-                let container = null;
-                if (sec === 'equipment') {
-                    container = document.getElementById('section-equipment');
-                } else if (sec === 'cartridge') {
-                    container = document.getElementById('section-cartridge');
-                } else if (sec === 'handpiece') {
-                    container = document.getElementById('section-handpiece');
-                } else if (sec === 'tip') {
-                    container = document.getElementById('section-tip');
-                }
-                
-                if (container) {
-                    const inputs = container.querySelectorAll('input');
-                    inputs.forEach(input => {
-                        input.disabled = true;
-                    });
-                }
-            });
         }
 
         function handleSuccessTransition() {
             if (!submitted) return;
             document.getElementById('formContainer').classList.add('hidden');
             document.getElementById('successScreen').classList.remove('hidden');
+        }
+
+        // 프로세스 안전 종료 및 네이티브 브라우저 창 닫기 트리거
+        function terminateProcess() {
+            // 1. 스크립트 오픈 트릭을 사용해 탭 종료 보안 해제 후 네이티브 닫기 시도
+            try {
+                window.open('', '_self', '');
+                window.close();
+            } catch (e) {
+                console.log("Standard window.close() blocked by client sandbox.");
+            }
+
+            // 2. 일반 종료 시도
+            try {
+                window.close();
+            } catch (e) {
+                console.log("Backup close execution.");
+            }
+            
+            // 3. 인앱 브라우저 및 강제 종료 거부 시 최종 폴백 (빈 주소 전환으로 완전 무인 프로세스 처리)
+            setTimeout(() => {
+                window.location.href = "about:blank";
+            }, 100);
         }
 
         function resetForm() {
@@ -1659,7 +1699,11 @@
             
             document.getElementById('hironicCustomForm').reset();
             
-            const allInputs = document.getElementById('hironicCustomForm').querySelectorAll('input');
+            // 기존 전송에 삽입되었던 플레이스홀더 전부 소거
+            const oldPlaceholders = document.querySelectorAll('.submission-placeholder');
+            oldPlaceholders.forEach(el => el.remove());
+
+            const allInputs = document.getElementById('hironicCustomForm').querySelectorAll('input, textarea');
             allInputs.forEach(i => {
                 if (i.id !== 'etc-eq' && i.id !== 'etc-cart' && i.id !== 'etc-hp' && i.id !== 'etc-tip' && i.id !== 'etc-demo') {
                     i.disabled = false;
@@ -1670,6 +1714,11 @@
             });
             document.getElementById('input-detailed-text').classList.remove('border-red-500');
             document.getElementById('input-media-link').classList.remove('border-red-500');
+
+            // 제출 버튼 원상 복구
+            const btnSubmit = document.getElementById('btn-submit');
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = `접수 제출하기 <i class="fa-solid fa-paper-plane text-xs"></i>`;
 
             document.getElementById('successScreen').classList.add('hidden');
             document.getElementById('formContainer').classList.remove('hidden');
