@@ -144,7 +144,7 @@
             
             <form id="hironicCustomForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdRh8eY4x0XFhEJtot0k-b7xTnWyzctoa-iZ31TWFWlgmt_EA/formResponse" method="POST" target="hidden_iframe" class="flex flex-col gap-6">
                 
-                <!-- Premium Header Banner -->
+                <!-- Premium Header Banner (Fully Responsive HTML Canvas) -->
                 <div class="bg-white rounded-3xl overflow-hidden shadow-[0_4px_25px_rgba(30,34,41,0.04)] border border-hironic-border relative">
 
                     <div class="w-full relative bg-hironic-goldLight overflow-hidden" style="aspect-ratio: 16/4;">
@@ -380,7 +380,7 @@
                         <label class="block text-base md:text-lg font-bold text-hironic-charcoal mb-1">
                             8. 시리얼 번호 <span class="text-red-500 ml-0.5">*</span>
                         </label>
-                        <p class="text-xs text-gray-400 mb-4">제품에 부착된 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수에 제한이 될 수 있습니다.)</p>
+                        <p class="text-xs text-gray-400 mb-4">제품에 부착된 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수가 제한이 될 수 있습니다.)</p>
                         <input type="text" id="input-cart-serial" name="entry.2112091891" oninput="handleInputLive(this)" placeholder="예) FLA30000000" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
 
@@ -403,7 +403,7 @@
                         </label>
                         <p class="text-xs text-gray-400 mb-4">서비스 접수가 필요한 핸드피스 제품군을 선택해 주세요</p>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="handpiece-container">
                             <label class="choice-label flex items-center gap-3.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-goldLight/40 hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
                                 <input type="radio" name="entry.1206119229" value="Synerjet Series H/P" onclick="handleRadioWithEtc(this, 'etc-hp')" class="custom-radio-input">
                                 <span class="text-sm font-medium text-gray-700">Synerjet Series H/P</span>
@@ -487,7 +487,7 @@
                         </label>
                         <p class="text-xs text-gray-400 mb-4">서비스 접수가 필요한 팁 or 노즐의 제품군을 선택해 주세요.</p>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="tip-container">
                             <label class="choice-label flex items-center gap-3.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-goldLight/40 hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
                                 <input type="radio" name="entry.284306670" value="RM Tip" onclick="handleRadioWithEtc(this, 'etc-tip')" class="custom-radio-input">
                                 <span class="text-sm font-medium text-gray-700">RM Tip</span>
@@ -708,246 +708,156 @@
             updateProgress();
         }
 
-        // HTML5 Canvas Premium Service/Care Banner drawing algorithm (No External Images Required!)
+        // Window resize debounce handler
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(generateVectorHeader, 100);
+        });
+
+        // Custom Helper to draw rounded rectangles on older/sandboxed mobile browsers safely
+        function drawRoundRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+
+        // HTML5 Canvas Premium vector drawing (Matches image_15c2c3.png exactly & handles dynamic mobile scaling)
         function generateVectorHeader() {
             const canvas = document.getElementById('headerCanvas');
             if(!canvas) return;
             const ctx = canvas.getContext('2d');
             
-            canvas.width = 1600;
-            canvas.height = 400;
+            // Set dynamic dimensions based on layout container client width
+            const parentWidth = canvas.parentElement.clientWidth;
+            const targetHeight = Math.max(120, Math.min(parentWidth * 0.25, 180)); // scale height proportional to width
+            
+            canvas.style.width = parentWidth + 'px';
+            canvas.style.height = targetHeight + 'px';
 
-            const bgGradient = ctx.createLinearGradient(0, 0, 1600, 400);
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = parentWidth * dpr;
+            canvas.height = targetHeight * dpr;
+            ctx.scale(dpr, dpr);
+
+            // 1. Premium soft ivory/cream background linear gradient
+            const bgGradient = ctx.createLinearGradient(0, 0, parentWidth, targetHeight);
             bgGradient.addColorStop(0, '#FAF8F5');
             bgGradient.addColorStop(1, '#F3EFE9');
             ctx.fillStyle = bgGradient;
-            ctx.fillRect(0, 0, 1600, 400);
+            ctx.fillRect(0, 0, parentWidth, targetHeight);
 
-            ctx.fillStyle = 'rgba(199, 166, 107, 0.05)';
-            ctx.beginPath();
-            ctx.moveTo(700, 0);
-            ctx.lineTo(1600, 0);
-            ctx.lineTo(1600, 400);
-            ctx.lineTo(1100, 400);
-            ctx.closePath();
-            ctx.fill();
-
+            // 2. Decorative oblique golden lines on the right side
             ctx.strokeStyle = 'rgba(199, 166, 107, 0.12)';
-            ctx.lineWidth = 1.5;
-            for(let i = 0; i < 15; i++) {
+            ctx.lineWidth = 1;
+            const lineCount = 18;
+            const startX = parentWidth * 0.65;
+            for(let i = 0; i < lineCount; i++) {
                 ctx.beginPath();
-                ctx.moveTo(1050 + (i * 30), 0);
-                ctx.lineTo(1250 + (i * 30), 400);
+                ctx.moveTo(startX + (i * 22), 0);
+                ctx.lineTo(startX - 80 + (i * 22), targetHeight);
                 ctx.stroke();
             }
 
-            const lx = 160;
-            const ly = 200; 
-            const logoSize = 88;
-            const half = logoSize / 2;
-            const x0 = lx - half;
-            const y0 = ly - half;
+            // 3. Draw Left Brand Area (Responsive scaling scale factor)
+            const refScale = targetHeight / 150; // Reference height is 150px
+            const ly = targetHeight / 2;
+            const lx = 40 * refScale + 10;
+            const logoSize = 64 * refScale;
+            const x0 = lx;
+            const y0 = ly - (logoSize / 2);
 
+            // Gold rounded square background
             ctx.fillStyle = '#c7a66b';
-            ctx.beginPath();
-            ctx.roundRect(x0, y0, logoSize, logoSize, logoSize * 0.22);
+            drawRoundRect(ctx, x0, y0, logoSize, logoSize, logoSize * 0.22);
             ctx.fill();
 
-            ctx.strokeStyle = '#FAF8F5'; 
-            ctx.lineWidth = logoSize * 0.13;
+            // Artistic inner white cutout swirl line
+            ctx.strokeStyle = '#FAF8F5';
+            ctx.lineWidth = logoSize * 0.12;
             ctx.lineCap = 'round';
             ctx.beginPath();
-            ctx.moveTo(x0 - 5, y0 + logoSize * 0.48);
+            ctx.moveTo(x0 - (logoSize * 0.05), y0 + logoSize * 0.48);
             ctx.quadraticCurveTo(
-                x0 + logoSize * 0.48, y0 + logoSize * 0.48, 
-                x0 + logoSize * 0.48, y0 + logoSize + 5
+                x0 + logoSize * 0.48, y0 + logoSize * 0.48,
+                x0 + logoSize * 0.48, y0 + logoSize + (logoSize * 0.05)
             );
             ctx.stroke();
 
+            // Inner solid cutout shape
             const innerSize = logoSize * 0.38;
             ctx.fillStyle = '#c7a66b';
-            ctx.beginPath();
-            ctx.roundRect(x0, y0 + logoSize - innerSize, innerSize, innerSize, logoSize * 0.10);
+            drawRoundRect(ctx, x0, y0 + logoSize - innerSize, innerSize, innerSize, logoSize * 0.10);
             ctx.fill();
 
-            const scale = 1.15; 
-            const charHeight = 44 * scale;
-            const strokeW = 9.5 * scale;
-            
-            ctx.strokeStyle = '#c7a66b';
-            ctx.lineWidth = strokeW;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            
-            let cx = lx + 80; 
-            const cy = ly - (charHeight / 2); 
-            
-            // H
-            ctx.beginPath();
-            ctx.moveTo(cx + 4, cy + 2); ctx.lineTo(cx + 4, cy + charHeight - 2);
-            ctx.moveTo(cx + 32, cy + 2); ctx.lineTo(cx + 32, cy + charHeight - 2);
-            ctx.moveTo(cx + 4, cy + charHeight / 2); ctx.lineTo(cx + 32, cy + charHeight / 2);
-            ctx.stroke();
-            cx += 46 * scale;
-            
-            // I
-            ctx.beginPath();
-            ctx.moveTo(cx + 4, cy + 2); ctx.lineTo(cx + 4, cy + charHeight - 2);
-            ctx.stroke();
-            cx += 20 * scale;
-            
-            // R
-            ctx.beginPath();
-            ctx.moveTo(cx + 4, cy + 2); ctx.lineTo(cx + 4, cy + charHeight - 2);
-            ctx.moveTo(cx + 4, cy + 2); ctx.lineTo(cx + 20, cy + 2);
-            ctx.arcTo(cx + 32, cy + 2, cx + 32, cy + charHeight / 2, 10 * scale);
-            ctx.arcTo(cx + 32, cy + charHeight / 2, cx + 4, cy + charHeight / 2, 10 * scale);
-            ctx.lineTo(cx + 4, cy + charHeight / 2);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(cx + 18, cy + charHeight / 2); ctx.lineTo(cx + 32, cy + charHeight - 2);
-            ctx.stroke();
-            cx += 46 * scale;
-            
-            // O
-            ctx.beginPath();
-            ctx.roundRect(cx + 4, cy + 2, 28 * scale, charHeight - 4, 11 * scale);
-            ctx.stroke();
-            cx += 46 * scale;
-            
-            // N
-            ctx.beginPath();
-            ctx.moveTo(cx + 4, cy + charHeight - 2); ctx.lineTo(cx + 4, cy + 2);
-            ctx.lineTo(cx + 32, cy + charHeight - 2); ctx.lineTo(cx + 32, cy + 2);
-            ctx.stroke();
-            cx += 46 * scale;
-            
-            // I
-            ctx.beginPath();
-            ctx.moveTo(cx + 4, cy + 2); ctx.lineTo(cx + 4, cy + charHeight - 2);
-            ctx.stroke();
-            cx += 20 * scale;
-            
-            // C
-            ctx.beginPath();
-            ctx.moveTo(cx + 32, cy + 2);
-            ctx.arcTo(cx + 4, cy + 2, cx + 4, cy + charHeight - 2, 11 * scale);
-            ctx.arcTo(cx + 4, cy + charHeight - 2, cx + 32, cy + charHeight - 2, 11 * scale);
-            ctx.lineTo(cx + 32, cy + charHeight - 2);
-            ctx.stroke();
-
-            // --- Right: Technical Service Badge (image_88ef03.png) ---
-            const tx = 1140;
-            const ty = 95;
-            const tw = 260;
-            const th = 210;
-            const tr = 24;
-
-            ctx.shadowColor = 'rgba(30, 34, 41, 0.08)';
-            ctx.shadowBlur = 24;
-            ctx.shadowOffsetY = 12;
-
+            // Gold Brand Typography: "HIRONIC"
             ctx.fillStyle = '#c7a66b';
-            ctx.beginPath();
-            ctx.roundRect(tx, ty, tw, th, tr);
-            ctx.fill();
+            ctx.font = `900 ${Math.round(28 * refScale)}px "Noto Sans KR", sans-serif`;
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('HIRONIC', x0 + logoSize + (16 * refScale), ly);
 
-            ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+            // 4. Draw Right: Technical Service Badge (Only draw if width is wide enough to avoid overlap on mobile)
+            if (parentWidth > 520) {
+                const badgeW = 200 * refScale;
+                const badgeH = 110 * refScale;
+                const rx = parentWidth - badgeW - 35;
+                const ry = ly - (badgeH / 2);
 
-            // Draw white circle with checkmark
-            const circleX = tx + tw / 2;
-            const circleY = ty + 60;
-            const circleR = 28;
+                // Elegant drop shadow for the badge
+                ctx.shadowColor = 'rgba(30, 34, 41, 0.06)';
+                ctx.shadowBlur = 12 * refScale;
+                ctx.shadowOffsetY = 4 * refScale;
 
-            ctx.fillStyle = '#FFFFFF';
-            ctx.beginPath();
-            ctx.arc(circleX, circleY, circleR, 0, Math.PI * 2);
-            ctx.fill();
+                ctx.fillStyle = '#c7a66b';
+                drawRoundRect(ctx, rx, ry, badgeW, badgeH, 18 * refScale);
+                ctx.fill();
 
-            // Draw checkmark inside circle
-            ctx.strokeStyle = '#c7a66b';
-            ctx.lineWidth = 5;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.beginPath();
-            ctx.moveTo(circleX - 10, circleY);
-            ctx.lineTo(circleX - 2, circleY + 8);
-            ctx.lineTo(circleX + 11, circleY - 6);
-            ctx.stroke();
+                // Reset shadow properties immediately
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetY = 0;
 
-            // Badge Text 1: "TECHNICAL SERVICE"
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '900 16px "Noto Sans KR", sans-serif';
-            ctx.textAlign = 'center';
-            ctx.letterSpacing = '1px';
-            ctx.fillText('TECHNICAL SERVICE', tx + tw / 2, ty + 130);
+                // White circle for checkmark
+                const circleX = rx + (badgeW / 2);
+                const circleY = ry + (32 * refScale);
+                const circleR = 15 * refScale;
 
-            // Badge Text 2: "HIRONIC OFFICIAL CARE SYSTEM"
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.font = '500 10px "Noto Sans KR", sans-serif';
-            ctx.letterSpacing = '0.5px';
-            ctx.fillText('HIRONIC OFFICIAL CARE SYSTEM', tx + tw / 2, ty + 155);
-        }
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.arc(circleX, circleY, circleR, 0, Math.PI * 2);
+                ctx.fill();
 
-        // ----------------- CONDITION AND STEP LOGIC -----------------
-        function openCustomAlert(text) {
-            document.getElementById('custom-alert-text').innerText = text;
-            document.getElementById('custom-alert').classList.remove('hidden');
-        }
+                // Gold checkmark icon
+                ctx.strokeStyle = '#c7a66b';
+                ctx.lineWidth = 3 * refScale;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(circleX - (5 * refScale), circleY);
+                ctx.lineTo(circleX - (1 * refScale), circleY + (4 * refScale));
+                ctx.lineTo(circleX + (6 * refScale), circleY - (4 * refScale));
+                ctx.stroke();
 
-        function closeCustomAlert() {
-            document.getElementById('custom-alert').classList.add('hidden');
-        }
+                // "TECHNICAL SERVICE" in white
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = `900 ${Math.round(11 * refScale)}px "Noto Sans KR", sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillText('TECHNICAL SERVICE', rx + (badgeW / 2), ry + (66 * refScale));
 
-        // 입력 라이브 피드백
-        function handleInputLive(element) {
-            if (element.value.trim() !== "") {
-                element.classList.remove('border-red-500');
+                // "HIRONIC OFFICIAL CARE SYSTEM" in white/80
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.font = `500 ${Math.round(7.5 * refScale)}px "Noto Sans KR", sans-serif`;
+                ctx.fillText('HIRONIC OFFICIAL CARE SYSTEM', rx + (badgeW / 2), ry + (82 * refScale));
             }
-            updateProgress();
-        }
-
-        // 라디오 이벤트 및 예외 인풋 제어
-        function handleRadioWithEtc(radioElement, targetInputId) {
-            const targetInput = document.getElementById(targetInputId);
-            
-            if (radioElement.name === 'entry.478248741') {
-                document.getElementById('etc-eq').disabled = true;
-                document.getElementById('etc-eq').classList.remove('border-red-500');
-            } else if (radioElement.name === 'entry.2022084396') {
-                document.getElementById('etc-cart').disabled = true;
-                document.getElementById('etc-cart').classList.remove('border-red-500');
-            } else if (radioElement.name === 'entry.1206119229') {
-                document.getElementById('etc-hp').disabled = true;
-                document.getElementById('etc-hp').classList.remove('border-red-500');
-            } else if (radioElement.name === 'entry.284306670') {
-                document.getElementById('etc-tip').disabled = true;
-                document.getElementById('etc-tip').classList.remove('border-red-500');
-            } else if (radioElement.name === 'entry.1831314282') {
-                document.getElementById('etc-demo').disabled = true;
-                document.getElementById('etc-demo').classList.remove('border-red-500');
-            }
-
-            if (radioElement.value === '__other_option__') {
-                targetInput.disabled = false;
-                targetInput.focus();
-            } else {
-                if (targetInput) {
-                    targetInput.disabled = true;
-                    targetInput.value = '';
-                }
-            }
-            updateProgress();
-        }
-
-        function handleFaultyProductChoice(element) {
-            document.getElementById('faulty-product-container').classList.remove('shake');
-            updateProgress();
-        }
-
-        function getCheckedRadioValue(groupName) {
-            const checked = document.querySelector(`input[name="${groupName}"]:checked`);
-            return checked ? checked.value : null;
         }
 
         // ----------------- FILE UPLOAD LOGIC -----------------
@@ -1324,7 +1234,7 @@
                 if (uploadedFiles.length > 0) {
                     const isAnyUploading = uploadedFiles.some(f => f.status === 'uploading');
                     if (isAnyUploading) {
-                        openCustomAlert("아직 사진의 고해상도 연동이 완료되지 않았습니다. 전송 완료 후 다음으로 가실 수 있습니다.");
+                        openCustomAlert("아직 사진의 고해상도 연동이 완료되지 않았습니다. 잠시만 기다려 주세요.");
                         return false;
                     }
                 }
