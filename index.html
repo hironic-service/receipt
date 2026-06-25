@@ -1192,7 +1192,7 @@
         function updateFormFileMetadata() {
             const metaInput = document.getElementById('input-media-link');
             if (uploadedFiles.length === 0) {
-                metaInput.value = "첨부파일 없음"; // 구글 폼 필수 설정 오류를 방지하기 위해 빈 값이 아닌 디폴트 텍스트 바인딩
+                metaInput.value = ""; // 구글 폼에 전송할 데이터가 없는 경우 자연스러운 무항 처리를 위해 빈 값 지정
                 metaInput.classList.remove('border-red-500');
             } else {
                 const fileUrls = uploadedFiles
