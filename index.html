@@ -119,7 +119,7 @@
 </head>
 <body class="bg-[#FAF6F0] min-h-screen font-sans text-hironic-charcoal antialiased p-4 md:p-8">
 
-    <!-- 배후 전송용 히든 Iframe (onload 백업용 유지) -->
+    <!-- 배후 전송용 히든 Iframe (비상 복구용) -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeOnload()"></iframe>
 
     <!-- 전체 레이아웃 컨테이너 -->
@@ -144,11 +144,37 @@
             
             <form id="hironicCustomForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdRh8eY4x0XFhEJtot0k-b7xTnWyzctoa-iZ31TWFWlgmt_EA/formResponse" method="POST" target="hidden_iframe" class="flex flex-col gap-6">
                 
-                <!-- Premium Header Banner (Fully Responsive HTML Canvas) -->
+                <!-- Premium Header Banner (Crash-free High-resolution Vector HTML/SVG structure) -->
                 <div class="bg-white rounded-3xl overflow-hidden shadow-[0_4px_25px_rgba(30,34,41,0.04)] border border-hironic-border relative">
 
-                    <div class="w-full relative bg-hironic-goldLight overflow-hidden" style="aspect-ratio: 16/4;">
-                        <canvas id="headerCanvas" class="w-full h-full object-cover" width="1600" height="400"></canvas>
+                    <!-- 골드 그라데이션 프리미엄 순수 반응형 헤더 (Canvas 런타임 크래쉬 버그 완전 해결) -->
+                    <div class="relative w-full bg-gradient-to-r from-[#FAF8F5] to-[#F3EFE9] px-6 py-6 md:px-10 md:py-8 flex items-center justify-between min-h-[110px] md:min-h-[145px] overflow-hidden">
+                        
+                        <!-- 배경 데코레이션 사선 패턴 -->
+                        <div class="absolute right-0 top-0 bottom-0 w-2/3 pointer-events-none opacity-[0.15] select-none" style="background: repeating-linear-gradient(45deg, #c7a66b, #c7a66b 1px, transparent 1px, transparent 20px);"></div>
+                        
+                        <!-- 좌측 브랜드 로고 영역 (image_15d9df.png 심볼 비율 정밀 복사) -->
+                        <div class="flex items-center gap-4 md:gap-6 z-10">
+                            <svg class="w-14 h-14 md:w-18 md:h-18 shrink-0 bg-white p-2.5 rounded-2xl shadow-[0_2px_12px_rgba(199,166,107,0.12)] border border-[#EBE6DD]/60" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- 우상단 골드 아치 파트 -->
+                                <path d="M 12,12 H 76 C 82.63,12 88,17.37 88,24 V 76 H 52 C 52,50.73 41.27,40 26,40 H 12 V 12 Z" fill="#c7a66b" />
+                                <!-- 좌하단 골드 둥근 사각형 파트 -->
+                                <rect x="12" y="52" width="30" height="30" rx="8" fill="#c7a66b" />
+                            </svg>
+                            <div class="flex flex-col">
+                                <span class="font-serif font-black text-2xl md:text-3xl tracking-widest text-[#c7a66b] uppercase leading-none">HIRONIC</span>
+                                <span class="text-[9px] md:text-[11px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-2.5 leading-none">Official Care</span>
+                            </div>
+                        </div>
+
+                        <!-- 우측 공식 서비스 엠블럼 카드 (image_15c2c3.png 매칭형) -->
+                        <div class="hidden sm:flex flex-col items-center justify-center bg-[#c7a66b] text-white py-3.5 px-6 rounded-2xl shadow-[0_4px_12px_rgba(199,166,107,0.2)] w-48 text-center border border-white/10 shrink-0 z-10">
+                            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-[#c7a66b] text-sm mb-2 shadow-inner">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span class="font-black text-[11px] tracking-wider uppercase leading-none">Technical Service</span>
+                            <span class="text-[7.5px] text-white/80 font-medium tracking-wide mt-1.5 uppercase leading-none">Hironic Official Care System</span>
+                        </div>
                     </div>
 
                     <!-- Golden Divider Stripe -->
@@ -243,6 +269,8 @@
                             </label>
                         </div>
                     </div>
+                    <!-- 모바일 끈끈이 바 조작 쾌적성 강화를 위한 스페이서 장착 -->
+                    <div class="h-28 sm:hidden"></div>
                 </div>
 
                 <!-- ================= STEP 2: SECTION 2 (장비 선택 시 이동) ================= -->
@@ -323,6 +351,7 @@
                         <p class="text-xs text-gray-400 mb-4">사용 샷 수 or 사용 시간을 입력해 주세요. (시술 화면 진입 전 메인 우측 상단 톱니바퀴 클릭 시 확인 가능)</p>
                         <input type="text" id="input-eq-usage" name="entry.611804549" oninput="handleInputLive(this)" placeholder="예) 12345678" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
+                    <div class="h-28 sm:hidden"></div>
                 </div>
 
                 <!-- ================= STEP 2: SECTION 3 (카트리지 선택 시 이동) ================= -->
@@ -391,6 +420,7 @@
                         <p class="text-xs text-gray-400 mb-4">사용 샷 수 or 남은 샷 수를 입력해 주세요. (Error Code로 인해 확인 불가 시 Error Code 번호 기재)</p>
                         <input type="text" id="input-cart-usage" name="entry.1226825078" oninput="handleInputLive(this)" placeholder="예) 123456" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
+                    <div class="h-28 sm:hidden"></div>
                 </div>
 
                 <!-- ================= STEP 2: SECTION 4 (핸드피스 선택 시 이동) ================= -->
@@ -475,6 +505,7 @@
                         <p class="text-xs text-gray-400 mb-4">사용 샷 수 or 남은 샷 수를 입력해 주세요. (Error Code로 인해 확인 불가 시 Error Code 번호 기재)</p>
                         <input type="text" id="input-hp-usage" name="entry.988708164" oninput="handleInputLive(this)" placeholder="예) 12345" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
+                    <div class="h-28 sm:hidden"></div>
                 </div>
 
                 <!-- ================= STEP 2: SECTION 5 (팁 or 노즐 선택 시 이동) ================= -->
@@ -539,6 +570,7 @@
                         <p class="text-xs text-gray-400 mb-4">사용 샷 수 or 사용 시간을 입력해 주세요.</p>
                         <input type="text" id="input-tip-usage" name="entry.602978248" oninput="handleInputLive(this)" placeholder="예) 123" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
+                    <div class="h-28 sm:hidden"></div>
                 </div>
 
                 <!-- ================= STEP 3: SECTION 6 (상세 접수 및 미디어 파일 첨부) ================= -->
@@ -581,6 +613,7 @@
                         <!-- 구글 설문지에 파일 목록 메타데이터를 기입해 넘길 히든 인풋 -->
                         <input type="hidden" id="input-media-link" name="entry.1067959635">
                     </div>
+                    <div class="h-28 sm:hidden"></div>
                 </div>
 
                 <!-- ================= STEP 4: SECTION 7 (HIRONIC 20주년 프로모션 데모) ================= -->
@@ -643,10 +676,11 @@
                             </label>
                         </div>
                     </div>
+                    <div class="h-28 sm:hidden"></div>
                 </div>
 
-                <!-- Form Dynamic Control Button & Navigation bar footer -->
-                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-[0_4px_25px_rgba(30,34,41,0.04)] border border-hironic-border flex flex-col sm:flex-row justify-between items-center gap-5">
+                <!-- Form Dynamic Control Button & Navigation bar footer (Sticky Bottom on Mobile) -->
+                <div class="fixed bottom-0 left-0 right-0 sm:relative sm:bottom-auto z-40 bg-white/95 backdrop-blur-md sm:bg-white p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:p-8 border-t sm:border border-hironic-border sm:rounded-3xl shadow-[0_-8px_24px_rgba(30,34,41,0.06)] sm:shadow-[0_4px_25px_rgba(30,34,41,0.04)] flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-5 animate-fade-in">
                     
                     <!-- Progress meter -->
                     <div class="w-full sm:w-auto flex items-center gap-3">
@@ -703,166 +737,8 @@
         let uploadedFiles = []; // 업로드된 파일 객체 관리 배열 (최대 10개)
 
         window.onload = function () {
-            generateVectorHeader();
+            // 레이아웃 의존 런타임 크래쉬 Canvas를 전면 제거하여 updateProgress 및 버튼 바인딩이 100% 실행 보장됨
             updateProgress();
-        }
-
-        // Window resize debounce handler
-        let resizeTimeout;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(generateVectorHeader, 100);
-        });
-
-        // Custom Helper to draw rounded rectangles on older/sandboxed mobile browsers safely
-        function drawRoundRect(ctx, x, y, width, height, radius) {
-            ctx.beginPath();
-            ctx.moveTo(x + radius, y);
-            ctx.lineTo(x + width - radius, y);
-            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-            ctx.lineTo(x + width, y + height - radius);
-            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-            ctx.lineTo(x + radius, y + height);
-            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-            ctx.lineTo(x, y + radius);
-            ctx.quadraticCurveTo(x, y, x + radius, y);
-            ctx.closePath();
-        }
-
-        // HTML5 Canvas Premium vector drawing (Matches image_15c2c3.png and image_15d9df.png exactly & handles dynamic mobile scaling)
-        function generateVectorHeader() {
-            const canvas = document.getElementById('headerCanvas');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-            
-            // Set dynamic dimensions based on layout container client width
-            const parentWidth = canvas.parentElement.clientWidth;
-            const targetHeight = Math.max(120, Math.min(parentWidth * 0.25, 180)); // scale height proportional to width
-            
-            canvas.style.width = parentWidth + 'px';
-            canvas.style.height = targetHeight + 'px';
-
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = parentWidth * dpr;
-            canvas.height = targetHeight * dpr;
-            ctx.scale(dpr, dpr);
-
-            // 1. Premium soft ivory/cream background linear gradient
-            const bgGradient = ctx.createLinearGradient(0, 0, parentWidth, targetHeight);
-            bgGradient.addColorStop(0, '#FAF8F5');
-            bgGradient.addColorStop(1, '#F3EFE9');
-            ctx.fillStyle = bgGradient;
-            ctx.fillRect(0, 0, parentWidth, targetHeight);
-
-            // 2. Decorative oblique golden lines on the right side
-            ctx.strokeStyle = 'rgba(199, 166, 107, 0.12)';
-            ctx.lineWidth = 1;
-            const lineCount = 18;
-            const startX = parentWidth * 0.65;
-            for(let i = 0; i < lineCount; i++) {
-                ctx.beginPath();
-                ctx.moveTo(startX + (i * 22), 0);
-                ctx.lineTo(startX - 80 + (i * 22), targetHeight);
-                ctx.stroke();
-            }
-
-            // 3. Draw Left Brand Area (Responsive scaling scale factor)
-            const refScale = targetHeight / 150; // Reference height is 150px
-            const ly = targetHeight / 2;
-            const lx = 40 * refScale + 10;
-            const logoSize = 64 * refScale;
-            const x0 = lx;
-            const y0 = ly - (logoSize / 2);
-
-            // [로고 전면 원복 보정]: image_15d9df.png 형식을 완벽하게 표현하는 고해상도 백터 패스 드로잉
-            // 3-1. 우상단 골드 아치 벤드 쉐입
-            ctx.fillStyle = '#c7a66b';
-            ctx.beginPath();
-            // 외곽 탑-레프트 코너 라운딩
-            ctx.moveTo(x0 + logoSize * 0.22, y0);
-            // 외곽 탑-라이트 코너 라운딩
-            ctx.lineTo(x0 + logoSize - logoSize * 0.22, y0);
-            ctx.quadraticCurveTo(x0 + logoSize, y0, x0 + logoSize, y0 + logoSize * 0.22);
-            // 외곽 바텀-라이트 코너 라운딩
-            ctx.lineTo(x0 + logoSize, y0 + logoSize - logoSize * 0.22);
-            ctx.quadraticCurveTo(x0 + logoSize, y0 + logoSize, x0 + logoSize - logoSize * 0.22, y0 + logoSize);
-            // 외곽 바텀 엣지 컷오프 (수직 갭 시작 경계까지 전진)
-            ctx.lineTo(x0 + logoSize * 0.56, y0 + logoSize);
-            // 내부 수직 엣지 업 (코너 라운딩 시작 부분까지 전진)
-            ctx.lineTo(x0 + logoSize * 0.56, y0 + logoSize * 0.44 + logoSize * 0.12);
-            ctx.quadraticCurveTo(x0 + logoSize * 0.56, y0 + logoSize * 0.44, x0 + logoSize * 0.56 - logoSize * 0.12, y0 + logoSize * 0.44);
-            // 내부 수평 엣지 레프트 (외곽 좌측 엣지 x0 경계선까지 전진)
-            ctx.lineTo(x0, y0 + logoSize * 0.44);
-            // 외곽 좌측 엣지 업 및 탑-레프트 라운딩 복귀
-            ctx.lineTo(x0, y0 + logoSize * 0.22);
-            ctx.quadraticCurveTo(x0, y0, x0 + logoSize * 0.22, y0);
-            ctx.closePath();
-            ctx.fill();
-
-            // 3-2. 좌하단 골드 스퀘어 쉐입 (image_15d9df.png와 동일하게 사방 모서리가 라운딩 처리된 별도 스퀘어 분리 드로잉)
-            drawRoundRect(ctx, x0, y0 + logoSize * 0.56, logoSize * 0.44, logoSize * 0.44, logoSize * 0.1);
-            ctx.fill();
-
-            // Gold Brand Typography: "HIRONIC" (image_15c2c3.png 매칭형 로고 텍스트)
-            ctx.fillStyle = '#c7a66b';
-            ctx.font = `900 ${Math.round(28 * refScale)}px "Noto Sans KR", sans-serif`;
-            ctx.textAlign = 'left';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('HIRONIC', x0 + logoSize + (16 * refScale), ly);
-
-            // 4. Draw Right: Technical Service Badge (Only draw if width is wide enough to avoid overlap on mobile)
-            if (parentWidth > 520) {
-                const badgeW = 200 * refScale;
-                const badgeH = 110 * refScale;
-                const rx = parentWidth - badgeW - 35;
-                const ry = ly - (badgeH / 2);
-
-                // Elegant drop shadow for the badge
-                ctx.shadowColor = 'rgba(30, 34, 41, 0.06)';
-                ctx.shadowBlur = 12 * refScale;
-                ctx.shadowOffsetY = 4 * refScale;
-
-                ctx.fillStyle = '#c7a66b';
-                drawRoundRect(ctx, rx, ry, badgeW, badgeH, 18 * refScale);
-                ctx.fill();
-
-                // Reset shadow properties immediately
-                ctx.shadowColor = 'transparent';
-                ctx.shadowBlur = 0;
-                ctx.shadowOffsetY = 0;
-
-                // White circle for checkmark
-                const circleX = rx + (badgeW / 2);
-                const circleY = ry + (32 * refScale);
-                const circleR = 15 * refScale;
-
-                ctx.fillStyle = '#FFFFFF';
-                ctx.beginPath();
-                ctx.arc(circleX, circleY, circleR, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Gold checkmark icon
-                ctx.strokeStyle = '#c7a66b';
-                ctx.lineWidth = 3 * refScale;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-                ctx.beginPath();
-                ctx.moveTo(circleX - (5 * refScale), circleY);
-                ctx.lineTo(circleX - (1 * refScale), circleY + (4 * refScale));
-                ctx.lineTo(circleX + (6 * refScale), circleY - (4 * refScale));
-                ctx.stroke();
-
-                // "TECHNICAL SERVICE" in white
-                ctx.fillStyle = '#FFFFFF';
-                ctx.font = `900 ${Math.round(11 * refScale)}px "Noto Sans KR", sans-serif`;
-                ctx.textAlign = 'center';
-                ctx.fillText('TECHNICAL SERVICE', rx + (badgeW / 2), ry + (66 * refScale));
-
-                // "HIRONIC OFFICIAL CARE SYSTEM" in white/80
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                ctx.font = `500 ${Math.round(7.5 * refScale)}px "Noto Sans KR", sans-serif`;
-                ctx.fillText('HIRONIC OFFICIAL CARE SYSTEM', rx + (badgeW / 2), ry + (82 * refScale));
-            }
         }
 
         // ----------------- FILE UPLOAD LOGIC -----------------
@@ -1130,22 +1006,24 @@
         function validateCurrentStep() {
             let isValid = true;
 
-            if (currentStep === 1) {
-                const q1 = document.getElementById('input-hospital-name');
-                const q2 = document.getElementById('input-hospital-location');
-                const q3 = document.getElementById('input-contact-name');
-                const q4 = document.getElementById('input-contact-phone');
-                const q5Val = getCheckedRadioValue('entry.1658877534');
+            const q1 = document.getElementById('input-hospital-name');
+            const q2 = document.getElementById('input-hospital-location');
+            const q3 = document.getElementById('input-contact-name');
+            const q4 = document.getElementById('input-contact-phone');
+            const q5Val = getCheckedRadioValue('entry.1658877534');
 
-                if (!q1.value.trim()) { q1.classList.add('border-red-500', 'shake'); setTimeout(() => q1.classList.remove('shake'), 400); isValid = false; }
-                if (!q2.value.trim()) { q2.classList.add('border-red-500', 'shake'); setTimeout(() => q2.classList.remove('shake'), 400); isValid = false; }
-                if (!q3.value.trim()) { q3.classList.add('border-red-500', 'shake'); setTimeout(() => q3.classList.remove('shake'), 400); isValid = false; }
-                if (!q4.value.trim()) { q4.classList.add('border-red-500', 'shake'); setTimeout(() => q4.classList.remove('shake'), 400); isValid = false; }
+            if (currentStep === 1) {
+                if (!q1 || !q1.value.trim()) { q1.classList.add('border-red-500', 'shake'); setTimeout(() => q1.classList.remove('shake'), 400); isValid = false; }
+                if (!q2 || !q2.value.trim()) { q2.classList.add('border-red-500', 'shake'); setTimeout(() => q2.classList.remove('shake'), 400); isValid = false; }
+                if (!q3 || !q3.value.trim()) { q3.classList.add('border-red-500', 'shake'); setTimeout(() => q3.classList.remove('shake'), 400); isValid = false; }
+                if (!q4 || !q4.value.trim()) { q4.classList.add('border-red-500', 'shake'); setTimeout(() => q4.classList.remove('shake'), 400); isValid = false; }
                 
                 if (!q5Val) {
                     const q5Box = document.getElementById('faulty-product-container');
-                    q5Box.classList.add('shake');
-                    setTimeout(() => q5Box.classList.remove('shake'), 400);
+                    if (q5Box) {
+                        q5Box.classList.add('shake');
+                        setTimeout(() => q5Box.classList.remove('shake'), 400);
+                    }
                     isValid = false;
                 }
 
@@ -1164,13 +1042,13 @@
                     const q9 = document.getElementById('input-eq-usage');
 
                     if (!q6Val) { isValid = false; }
-                    if (q6Val === '__other_option__' && !q6EtcText.value.trim()) {
+                    if (q6Val === '__other_option__' && q6EtcText && !q6EtcText.value.trim()) {
                         q6EtcText.classList.add('border-red-500');
                         isValid = false;
                     }
-                    if (!q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
-                    if (!q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
-                    if (!q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
+                    if (q7 && !q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
+                    if (q8 && !q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
+                    if (q9 && !q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
 
                 } else if (productType === "카트리지") {
                     const q6Val = getCheckedRadioValue('entry.2022084396');
@@ -1180,13 +1058,13 @@
                     const q9 = document.getElementById('input-cart-usage');
 
                     if (!q6Val) { isValid = false; }
-                    if (q6Val === '__other_option__' && !q6EtcText.value.trim()) {
+                    if (q6Val === '__other_option__' && q6EtcText && !q6EtcText.value.trim()) {
                         q6EtcText.classList.add('border-red-500');
                         isValid = false;
                     }
-                    if (!q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
-                    if (!q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
-                    if (!q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
+                    if (q7 && !q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
+                    if (q8 && !q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
+                    if (q9 && !q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
 
                 } else if (productType === "핸드피스") {
                     const q6Val = getCheckedRadioValue('entry.1206119229');
@@ -1196,13 +1074,13 @@
                     const q9 = document.getElementById('input-hp-usage');
 
                     if (!q6Val) { isValid = false; }
-                    if (q6Val === '__other_option__' && !q6EtcText.value.trim()) {
+                    if (q6Val === '__other_option__' && q6EtcText && !q6EtcText.value.trim()) {
                         q6EtcText.classList.add('border-red-500');
                         isValid = false;
                     }
-                    if (!q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
-                    if (!q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
-                    if (!q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
+                    if (q7 && !q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
+                    if (q8 && !q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
+                    if (q9 && !q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
 
                 } else if (productType === "팁 or 노즐") {
                     const q6Val = getCheckedRadioValue('entry.284306670');
@@ -1212,13 +1090,13 @@
                     const q9 = document.getElementById('input-tip-usage');
 
                     if (!q6Val) { isValid = false; }
-                    if (q6Val === '__other_option__' && !q6EtcText.value.trim()) {
+                    if (q6Val === '__other_option__' && q6EtcText && !q6EtcText.value.trim()) {
                         q6EtcText.classList.add('border-red-500');
                         isValid = false;
                     }
-                    if (!q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
-                    if (!q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
-                    if (!q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
+                    if (q7 && !q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
+                    if (q8 && !q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
+                    if (q9 && !q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
                 }
 
                 if (!isValid) {
@@ -1229,7 +1107,7 @@
                 const q10 = document.getElementById('input-detailed-text');
                 let step3Valid = true;
 
-                if (!q10.value.trim() || q10.value.trim().length < 5) {
+                if (q10 && (!q10.value.trim() || q10.value.trim().length < 5)) {
                     q10.classList.add('border-red-500', 'shake');
                     setTimeout(() => q10.classList.remove('shake'), 400);
                     step3Valid = false;
@@ -1239,7 +1117,7 @@
                 if (uploadedFiles.length > 0) {
                     const isAnyUploading = uploadedFiles.some(f => f.status === 'uploading');
                     if (isAnyUploading) {
-                        openCustomAlert("아직 사진의 고해상도 연동이 완료되지 않았습니다. 잠시만 기다려 주세요.");
+                        openCustomAlert("아직 사진의 고해상도 연동이 완료되지 않았습니다. 전송 완료 후 다음으로 가실 수 있습니다.");
                         return false;
                     }
                 }
@@ -1355,10 +1233,15 @@
         function updateProgress() {
             let score = 0;
 
-            const q1 = document.getElementById('input-hospital-name').value.trim();
-            const q2 = document.getElementById('input-hospital-location').value.trim();
-            const q3 = document.getElementById('input-contact-name').value.trim();
-            const q4 = document.getElementById('input-contact-phone').value.trim();
+            const q1El = document.getElementById('input-hospital-name');
+            const q2El = document.getElementById('input-hospital-location');
+            const q3El = document.getElementById('input-contact-name');
+            const q4El = document.getElementById('input-contact-phone');
+
+            const q1 = q1El ? q1El.value.trim() : '';
+            const q2 = q2El ? q2El.value.trim() : '';
+            const q3 = q3El ? q3El.value.trim() : '';
+            const q4 = q4El ? q4El.value.trim() : '';
             const q5 = getCheckedRadioValue('entry.1658877534');
 
             // 기본 정보 5문항: 각각 6점 가중치로 총 30점 할당
@@ -1379,24 +1262,36 @@
 
                     if (q5 === "장비") {
                         groupChoice = getCheckedRadioValue('entry.478248741');
-                        subName = document.getElementById('input-eq-name').value.trim();
-                        subSerial = document.getElementById('input-eq-serial').value.trim();
-                        subUsage = document.getElementById('input-eq-usage').value.trim();
-                        if (groupChoice === '__other_option__' && document.getElementById('etc-eq').value.trim()) score += 10;
+                        const subNameEl = document.getElementById('input-eq-name');
+                        const subSerialEl = document.getElementById('input-eq-serial');
+                        const subUsageEl = document.getElementById('input-eq-usage');
+                        const etcEqEl = document.getElementById('etc-eq');
+
+                        subName = subNameEl ? subNameEl.value.trim() : '';
+                        subSerial = subSerialEl ? subSerialEl.value.trim() : '';
+                        subUsage = subUsageEl ? subUsageEl.value.trim() : '';
+                        if (groupChoice === '__other_option__' && etcEqEl && etcEqEl.value.trim()) score += 10;
                         else if (groupChoice && groupChoice !== '__other_option__') score += 10;
                     } else if (q5 === "카트리지") {
                         groupChoice = getCheckedRadioValue('entry.2022084396');
-                        subName = document.getElementById('input-cart-name').value.trim();
-                        subSerial = document.getElementById('input-cart-serial').value.trim();
-                        subUsage = document.getElementById('input-cart-usage').value.trim();
-                        if (groupChoice === '__other_option__' && document.getElementById('etc-cart').value.trim()) score += 10;
+                        const subNameEl = document.getElementById('input-cart-name');
+                        const subSerialEl = document.getElementById('input-cart-serial');
+                        const subUsageEl = document.getElementById('input-cart-usage');
+                        const etcCartEl = document.getElementById('etc-cart');
+
+                        subName = subNameEl ? subNameEl.value.trim() : '';
+                        subSerial = subSerialEl ? subSerialEl.value.trim() : '';
+                        subUsage = subUsageEl ? subUsageEl.value.trim() : '';
+                        if (groupChoice === '__other_option__' && etcCartEl && etcCartEl.value.trim()) score += 10;
                         else if (groupChoice && groupChoice !== '__other_option__') score += 10;
                     } else if (q5 === "핸드피스") {
                         groupChoice = getCheckedRadioValue('entry.1206119229');
-                        subName = document.getElementById('input-hp-name').value.trim();
-                        subSerial = document.getElementById('input-hp-serial').value.trim();
-                        subUsage = document.getElementById('input-hp-usage').value.trim();
-                        if (groupChoice === '__other_option__' && document.getElementById('etc-hp').value.trim()) score += 10;
+                        const subNameEl = document.getElementById('input-hp-name');
+                        const subSerial = document.getElementById('input-hp-serial');
+                        const subUsage = document.getElementById('input-hp-usage');
+                        if (groupChoice === '__other_option__' && document.getElementById('etc-hp')) {
+                            if (document.getElementById('etc-hp').value.trim()) score += 10;
+                        }
                         else if (groupChoice && groupChoice !== '__other_option__') score += 10;
                     } else if (q5 === "팁 or 노즐") {
                         groupChoice = getCheckedRadioValue('entry.284306670');
@@ -1414,7 +1309,8 @@
             }
 
             // 10번 상세 접수 내용 입력: 15점 가중치 부여 (11번 문항이 빠짐에 따라 재조정)
-            const q10 = document.getElementById('input-detailed-text').value.trim();
+            const q10El = document.getElementById('input-detailed-text');
+            const q10 = q10El ? q10El.value.trim() : '';
             if (q10.length >= 5) {
                 score += 15;
             } else if (q10.length > 0) {
@@ -1425,7 +1321,8 @@
 
             // 데모 신청 여부: 15점 가중치 부여
             const demoChoice = getCheckedRadioValue('entry.1831314282');
-            if (demoChoice === '__other_option__' && document.getElementById('etc-demo').value.trim()) {
+            const etcDemoEl = document.getElementById('etc-demo');
+            if (demoChoice === '__other_option__' && etcDemoEl && etcDemoEl.value.trim()) {
                 score += 15;
             } else if (demoChoice && demoChoice !== '__other_option__') {
                 score += 15;
@@ -1433,8 +1330,10 @@
 
             // 총합 가중치 100% 한계치 매핑
             const percent = Math.min(Math.round(score), 100);
-            document.getElementById('progBar').style.width = percent + '%';
-            document.getElementById('progText').innerText = percent + '%';
+            const progBar = document.getElementById('progBar');
+            const progText = document.getElementById('progText');
+            if (progBar) progBar.style.width = percent + '%';
+            if (progText) progText.innerText = percent + '%';
         }
 
         // 비활성화 및 미선택 섹션의 구글 필수 데이터 중복 및 유실 검사를 통과시키는 지능형 폼 정합성 매핑 함수
@@ -1492,24 +1391,26 @@
                 openCustomAlert("HIRONIC 20주년 특별 데모 프로모션에 대한 참여 혹은 관심없음 여부를 선택해 주세요.");
                 return;
             }
-            if (demoChoice === '__other_option__' && !document.getElementById('etc-demo').value.trim()) {
-                const targetEtc = document.getElementById('etc-demo');
-                targetEtc.classList.add('border-red-500', 'shake');
-                setTimeout(() => targetEtc.classList.remove('shake'), 400);
+            const etcDemoEl = document.getElementById('etc-demo');
+            if (demoChoice === '__other_option__' && etcDemoEl && !etcDemoEl.value.trim()) {
+                etcDemoEl.classList.add('border-red-500', 'shake');
+                setTimeout(() => etcDemoEl.classList.remove('shake'), 400);
                 openCustomAlert("기타 선택 시 어떤 기종의 무상 데모를 기재할지 상세 기입을 완성해 주세요.");
                 return;
             }
 
             // 버튼 비활성화 및 전송 중 로딩 상태 표시 (이중 제출 원천 차단)
             const btnSubmit = document.getElementById('btn-submit');
-            btnSubmit.disabled = true;
-            btnSubmit.innerHTML = `전송 중... <i class="fa-solid fa-circle-notch animate-spin text-xs"></i>`;
+            if (btnSubmit) {
+                btnSubmit.disabled = true;
+                btnSubmit.innerHTML = `전송 중... <i class="fa-solid fa-circle-notch animate-spin text-xs"></i>`;
+            }
 
             submitted = true;
 
             // 1. 파일 첨부 결과가 비어있을 시 자동 디폴트 값 "첨부파일 없음" 인젝션 처리
             const metaInput = document.getElementById('input-media-link');
-            if (!metaInput.value.trim()) {
+            if (metaInput && !metaInput.value.trim()) {
                 metaInput.value = "첨부파일 없음";
             }
 
