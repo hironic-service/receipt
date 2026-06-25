@@ -119,7 +119,7 @@
 </head>
 <body class="bg-[#FAF6F0] min-h-screen font-sans text-hironic-charcoal antialiased p-4 md:p-8">
 
-    <!-- 배후 전송용 히든 Iframe -->
+    <!-- 배후 전송용 히든 Iframe (onload에서 무조건적인 화면 전환 차단하여 전송 신뢰도 최대화) -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeOnload()"></iframe>
 
     <!-- 전체 레이아웃 컨테이너 -->
@@ -175,7 +175,7 @@
                 </div>
 
                 <!-- ================= STEP 1: SECTION 1 (공통 기본 인적사항) ================= -->
-                <!-- 모바일 브라우저의 display:none 상태에서의 'required' 초점 불가 차단 버그 방지를 위해 네이티브 required 제거 (JS가 완벽 대행 검사) -->
+                <!-- 모바일 사파리/크롬의 display:none 상태에서의 'required' 초점 불가 오류 방지를 위해 네이티브 required 속성 일괄 제거 -->
                 <div id="step-1" class="flex flex-col gap-6 fade-in">
                     
                     <!-- Question 1: Hospital Name -->
@@ -380,7 +380,7 @@
                         <label class="block text-base md:text-lg font-bold text-hironic-charcoal mb-1">
                             8. 시리얼 번호 <span class="text-red-500 ml-0.5">*</span>
                         </label>
-                        <p class="text-xs text-gray-400 mb-4">제품에 부착된 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수가 제한이 될 수 있습니다.)</p>
+                        <p class="text-xs text-gray-400 mb-4">제품에 부착된 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수에 제한이 될 수 있습니다.)</p>
                         <input type="text" id="input-cart-serial" name="entry.2112091891" oninput="handleInputLive(this)" placeholder="예) FLA30000000" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
 
@@ -574,7 +574,7 @@
                             </button>
 
                             <!-- 업로드 완료된 파일 리스트 카드 영역 -->
-                            <div id="file-list-container" class="hidden flex flex-col gap-2.5 mt-2 max-h-[300px] overflow-y-auto custom-scrollbar">
+                            <div id="file-list-container" class="hidden flex flex-col gap-2.5 mt-2 max-h-[350px] overflow-y-auto custom-scrollbar">
                                 <!-- 업로드 항목이 이곳에 동적으로 렌더링됩니다 -->
                             </div>
                         </div>
@@ -613,3 +613,1116 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="demo-options-container">
                             <label class="choice-label flex items-center gap-3.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-goldLight/40 hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
                                 <input type="radio" name="entry.1831314282" value="V-Ro Advanced" onclick="handleRadioWithEtc(this, 'etc-demo')" class="custom-radio-input">
+                                <span class="text-sm font-medium text-gray-700">V-Ro Advanced</span>
+                            </label>
+                            <label class="choice-label flex items-center gap-3.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-goldLight/40 hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
+                                <input type="radio" name="entry.1831314282" value="MIGLOW" onclick="handleRadioWithEtc(this, 'etc-demo')" class="custom-radio-input">
+                                <span class="text-sm font-medium text-gray-700">MIGLOW</span>
+                            </label>
+                            <label class="choice-label flex items-center gap-3.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-goldLight/40 hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
+                                <input type="radio" name="entry.1831314282" value="SYNERJET" onclick="handleRadioWithEtc(this, 'etc-demo')" class="custom-radio-input">
+                                <span class="text-sm font-medium text-gray-700">SYNERJET</span>
+                            </label>
+                            <label class="choice-label flex items-center gap-3.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-goldLight/40 hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
+                                <input type="radio" name="entry.1831314282" value="ULTRAVERA" onclick="handleRadioWithEtc(this, 'etc-demo')" class="custom-radio-input">
+                                <span class="text-sm font-medium text-gray-700">ULTRAVERA</span>
+                            </label>
+                            <label class="choice-label flex items-center gap-3.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-goldLight/40 hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
+                                <input type="radio" name="entry.1831314282" value="PICOHI300" onclick="handleRadioWithEtc(this, 'etc-demo')" class="custom-radio-input">
+                                <span class="text-sm font-medium text-gray-700">PICOHI300</span>
+                            </label>
+                            <label class="choice-label flex items-center gap-3.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-goldLight/40 hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
+                                <input type="radio" name="entry.1831314282" value="관심없음" onclick="handleRadioWithEtc(this, 'etc-demo')" class="custom-radio-input">
+                                <span class="text-sm font-medium text-gray-700">관심없음</span>
+                            </label>
+                            
+                            <!-- 인라인 기타 카드 -->
+                            <label class="choice-label flex items-center gap-2.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
+                                <input type="radio" id="radio-demo-etc" name="entry.1831314282" value="__other_option__" onclick="handleRadioWithEtc(this, 'etc-demo')" class="custom-radio-input">
+                                <span class="text-sm font-medium text-gray-700 shrink-0">기타:</span>
+                                <input type="text" id="etc-demo" name="entry.1831314282.other_option_response" disabled oninput="handleInputLive(this)" placeholder="기타 기기명 적기" class="flex-1 min-w-0 px-2 py-1 bg-white border border-[#EBE6DD] rounded-xl text-xs outline-none focus:border-hironic-gold disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-200">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Dynamic Control Button & Navigation bar footer -->
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-[0_4px_25px_rgba(30,34,41,0.04)] border border-hironic-border flex flex-col sm:flex-row justify-between items-center gap-5">
+                    
+                    <!-- Progress meter -->
+                    <div class="w-full sm:w-auto flex items-center gap-3">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Progress</span>
+                        <div class="flex-1 sm:w-40 bg-gray-100 h-2 rounded-full overflow-hidden">
+                            <div id="progBar" class="bg-hironic-gold h-full w-0 transition-all duration-300"></div>
+                        </div>
+                        <span id="progText" class="text-xs font-bold text-hironic-goldDark">0%</span>
+                    </div>
+
+                    <!-- Step flow actions -->
+                    <div class="w-full sm:w-auto flex items-center gap-3 justify-end">
+                        <!-- Backward steps button -->
+                        <button type="button" id="btn-prev" onclick="handlePrevStep()" class="hidden w-full sm:w-auto px-6 py-3.5 border border-gray-300 hover:bg-gray-50 text-gray-600 text-sm font-bold tracking-wider rounded-xl transition-all duration-200 flex items-center justify-center gap-2 select-none">
+                            <i class="fa-solid fa-chevron-left text-xs"></i> 이전으로
+                        </button>
+                        
+                        <!-- Forward steps button -->
+                        <button type="button" id="btn-next" onclick="handleNextStep()" class="w-full sm:w-auto px-8 py-3.5 bg-hironic-gold hover:bg-hironic-goldDark text-white text-sm font-bold tracking-wider rounded-xl shadow-md transition-all duration-200 flex items-center justify-center gap-2 select-none">
+                            다음 단계로 <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+
+                        <!-- Google Forms Post Transmitter Trigger -->
+                        <button type="button" id="btn-submit" onclick="validateAndSubmit()" class="hidden w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-hironic-gold to-hironic-goldDark hover:from-hironic-goldDark hover:to-hironic-gold text-white text-sm font-bold tracking-wider rounded-xl shadow-lg transition-all duration-200 flex items-center justify-center gap-2 select-none">
+                            접수 제출하기 <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Submission success display block -->
+        <div class="hidden flex-1 flex flex-col items-center justify-center bg-white rounded-3xl p-12 text-center shadow-xl border border-hironic-border fade-in" id="successScreen">
+            <div class="w-20 h-20 bg-hironic-goldLight rounded-full flex items-center justify-center text-hironic-goldDark text-3xl mb-6 shadow-sm">
+                <i class="fa-solid fa-check-double"></i>
+            </div>
+            <!-- 요청 문양에 맞게 제목 수정 -->
+            <h2 class="text-2xl md:text-3xl font-black text-hironic-charcoal mb-3">서비스 접수가 완료되었습니다.</h2>
+            <p class="text-gray-500 max-w-md mx-auto mb-8 text-sm leading-relaxed">
+                보내주신 접수 내역을 확인한 엔지니어가 신속하게 세부 장비 이력을 검토한 후, 조속한 기일 내에 유선 연락 및 현장 일정을 확정해 드리겠습니다.
+            </p>
+            <!-- 요청 문양에 맞게 닫기 액션으로 버튼 교체 -->
+            <button onclick="terminateProcess()" class="px-10 py-3 bg-[#c7a66b] text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-hironic-goldDark transition-colors shadow-sm select-none">
+                닫기
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        let submitted = false;
+        let successTransitioned = false; // 성공 화면 이중 전환 방지 플래그
+        let currentStep = 1; 
+        let uploadedFiles = []; // 업로드된 파일 객체 관리 배열 (최대 10개)
+
+        window.onload = function () {
+            generateVectorHeader();
+            updateProgress();
+        }
+
+        // HTML5 Canvas Premium Service/Care Banner drawing algorithm (No External Images Required!)
+        function generateVectorHeader() {
+            const canvas = document.getElementById('headerCanvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 1600;
+            canvas.height = 400;
+
+            const bgGradient = ctx.createLinearGradient(0, 0, 1600, 400);
+            bgGradient.addColorStop(0, '#FAF8F5');
+            bgGradient.addColorStop(1, '#F3EFE9');
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, 1600, 400);
+
+            ctx.fillStyle = 'rgba(199, 166, 107, 0.05)';
+            ctx.beginPath();
+            ctx.moveTo(700, 0);
+            ctx.lineTo(1600, 0);
+            ctx.lineTo(1600, 400);
+            ctx.lineTo(1100, 400);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(199, 166, 107, 0.12)';
+            ctx.lineWidth = 1.5;
+            for(let i = 0; i < 15; i++) {
+                ctx.beginPath();
+                ctx.moveTo(1050 + (i * 30), 0);
+                ctx.lineTo(1250 + (i * 30), 400);
+                ctx.stroke();
+            }
+
+            const lx = 160;
+            const ly = 200; 
+            const logoSize = 88;
+            const half = logoSize / 2;
+            const x0 = lx - half;
+            const y0 = ly - half;
+
+            ctx.fillStyle = '#c7a66b';
+            ctx.beginPath();
+            ctx.roundRect(x0, y0, logoSize, logoSize, logoSize * 0.22);
+            ctx.fill();
+
+            ctx.strokeStyle = '#FAF8F5'; 
+            ctx.lineWidth = logoSize * 0.13;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(x0 - 5, y0 + logoSize * 0.48);
+            ctx.quadraticCurveTo(
+                x0 + logoSize * 0.48, y0 + logoSize * 0.48, 
+                x0 + logoSize * 0.48, y0 + logoSize + 5
+            );
+            ctx.stroke();
+
+            const innerSize = logoSize * 0.38;
+            ctx.fillStyle = '#c7a66b';
+            ctx.beginPath();
+            ctx.roundRect(x0, y0 + logoSize - innerSize, innerSize, innerSize, logoSize * 0.10);
+            ctx.fill();
+
+            const scale = 1.15; 
+            const charHeight = 44 * scale;
+            const strokeW = 9.5 * scale;
+            
+            ctx.strokeStyle = '#c7a66b';
+            ctx.lineWidth = strokeW;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            let cx = lx + 80; 
+            const cy = ly - (charHeight / 2); 
+            
+            // H
+            ctx.beginPath();
+            ctx.moveTo(cx + 4, cy + 2); ctx.lineTo(cx + 4, cy + charHeight - 2);
+            ctx.moveTo(cx + 32, cy + 2); ctx.lineTo(cx + 32, cy + charHeight - 2);
+            ctx.moveTo(cx + 4, cy + charHeight / 2); ctx.lineTo(cx + 32, cy + charHeight / 2);
+            ctx.stroke();
+            cx += 46 * scale;
+            
+            // I
+            ctx.beginPath();
+            ctx.moveTo(cx + 4, cy + 2); ctx.lineTo(cx + 4, cy + charHeight - 2);
+            ctx.stroke();
+            cx += 20 * scale;
+            
+            // R
+            ctx.beginPath();
+            ctx.moveTo(cx + 4, cy + 2); ctx.lineTo(cx + 4, cy + charHeight - 2);
+            ctx.moveTo(cx + 4, cy + 2); ctx.lineTo(cx + 20, cy + 2);
+            ctx.arcTo(cx + 32, cy + 2, cx + 32, cy + charHeight / 2, 10 * scale);
+            ctx.arcTo(cx + 32, cy + charHeight / 2, cx + 4, cy + charHeight / 2, 10 * scale);
+            ctx.lineTo(cx + 4, cy + charHeight / 2);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(cx + 18, cy + charHeight / 2); ctx.lineTo(cx + 32, cy + charHeight - 2);
+            ctx.stroke();
+            cx += 46 * scale;
+            
+            // O
+            ctx.beginPath();
+            ctx.roundRect(cx + 4, cy + 2, 28 * scale, charHeight - 4, 11 * scale);
+            ctx.stroke();
+            cx += 46 * scale;
+            
+            // N
+            ctx.beginPath();
+            ctx.moveTo(cx + 4, cy + charHeight - 2); ctx.lineTo(cx + 4, cy + 2);
+            ctx.lineTo(cx + 32, cy + charHeight - 2); ctx.lineTo(cx + 32, cy + 2);
+            ctx.stroke();
+            cx += 46 * scale;
+            
+            // I
+            ctx.beginPath();
+            ctx.moveTo(cx + 4, cy + 2); ctx.lineTo(cx + 4, cy + charHeight - 2);
+            ctx.stroke();
+            cx += 20 * scale;
+            
+            // C
+            ctx.beginPath();
+            ctx.moveTo(cx + 32, cy + 2);
+            ctx.arcTo(cx + 4, cy + 2, cx + 4, cy + charHeight - 2, 11 * scale);
+            ctx.arcTo(cx + 4, cy + charHeight - 2, cx + 32, cy + charHeight - 2, 11 * scale);
+            ctx.lineTo(cx + 32, cy + charHeight - 2);
+            ctx.stroke();
+
+            // --- Right: Technical Service Badge (image_88ef03.png) ---
+            const tx = 1140;
+            const ty = 95;
+            const tw = 260;
+            const th = 210;
+            const tr = 24;
+
+            ctx.shadowColor = 'rgba(30, 34, 41, 0.08)';
+            ctx.shadowBlur = 24;
+            ctx.shadowOffsetY = 12;
+
+            ctx.fillStyle = '#c7a66b';
+            ctx.beginPath();
+            ctx.roundRect(tx, ty, tw, th, tr);
+            ctx.fill();
+
+            ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+
+            // Draw white circle with checkmark
+            const circleX = tx + tw / 2;
+            const circleY = ty + 60;
+            const circleR = 28;
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(circleX, circleY, circleR, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw checkmark inside circle
+            ctx.strokeStyle = '#c7a66b';
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            ctx.moveTo(circleX - 10, circleY);
+            ctx.lineTo(circleX - 2, circleY + 8);
+            ctx.lineTo(circleX + 11, circleY - 6);
+            ctx.stroke();
+
+            // Badge Text 1: "TECHNICAL SERVICE"
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '900 16px "Noto Sans KR", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.letterSpacing = '1px';
+            ctx.fillText('TECHNICAL SERVICE', tx + tw / 2, ty + 130);
+
+            // Badge Text 2: "HIRONIC OFFICIAL CARE SYSTEM"
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.font = '500 10px "Noto Sans KR", sans-serif';
+            ctx.letterSpacing = '0.5px';
+            ctx.fillText('HIRONIC OFFICIAL CARE SYSTEM', tx + tw / 2, ty + 155);
+        }
+
+        // ----------------- CONDITION AND STEP LOGIC -----------------
+        function openCustomAlert(text) {
+            document.getElementById('custom-alert-text').innerText = text;
+            document.getElementById('custom-alert').classList.remove('hidden');
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('custom-alert').classList.add('hidden');
+        }
+
+        // 입력 라이브 피드백
+        function handleInputLive(element) {
+            if (element.value.trim() !== "") {
+                element.classList.remove('border-red-500');
+            }
+            updateProgress();
+        }
+
+        // 라디오 이벤트 및 예외 인풋 제어
+        function handleRadioWithEtc(radioElement, targetInputId) {
+            const targetInput = document.getElementById(targetInputId);
+            
+            if (radioElement.name === 'entry.478248741') {
+                document.getElementById('etc-eq').disabled = true;
+                document.getElementById('etc-eq').classList.remove('border-red-500');
+            } else if (radioElement.name === 'entry.2022084396') {
+                document.getElementById('etc-cart').disabled = true;
+                document.getElementById('etc-cart').classList.remove('border-red-500');
+            } else if (radioElement.name === 'entry.1206119229') {
+                document.getElementById('etc-hp').disabled = true;
+                document.getElementById('etc-hp').classList.remove('border-red-500');
+            } else if (radioElement.name === 'entry.284306670') {
+                document.getElementById('etc-tip').disabled = true;
+                document.getElementById('etc-tip').classList.remove('border-red-500');
+            } else if (radioElement.name === 'entry.1831314282') {
+                document.getElementById('etc-demo').disabled = true;
+                document.getElementById('etc-demo').classList.remove('border-red-500');
+            }
+
+            if (radioElement.value === '__other_option__') {
+                targetInput.disabled = false;
+                targetInput.focus();
+            } else {
+                if (targetInput) {
+                    targetInput.disabled = true;
+                    targetInput.value = '';
+                }
+            }
+            updateProgress();
+        }
+
+        function handleFaultyProductChoice(element) {
+            document.getElementById('faulty-product-container').classList.remove('shake');
+            updateProgress();
+        }
+
+        function getCheckedRadioValue(groupName) {
+            const checked = document.querySelector(`input[name="${groupName}"]:checked`);
+            return checked ? checked.value : null;
+        }
+
+        // ----------------- FILE UPLOAD LOGIC -----------------
+        function triggerFileSelect() {
+            document.getElementById('real-file-input').click();
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        // 클라우드 업로드 엔진 구현부 (tmpfiles.org API 연동 고도화)
+        async function uploadFileToCloud(fileObj) {
+            try {
+                const formData = new FormData();
+                formData.append('file', fileObj.file);
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'https://tmpfiles.org/api/v1/upload', true);
+
+                // 실시간 업로드 진행도 추적식
+                xhr.upload.onprogress = function(e) {
+                    if (e.lengthComputable) {
+                        const percentComplete = Math.round((e.loaded / e.total) * 100);
+                        const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
+                        if (fileIndex !== -1) {
+                            uploadedFiles[fileIndex].progress = percentComplete;
+                            renderFileList();
+                        }
+                    }
+                };
+
+                xhr.onload = function() {
+                    const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
+                    if (fileIndex === -1) return;
+
+                    if (xhr.status === 200) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            if (response.status === 'success' && response.data && response.data.url) {
+                                // 다운로드 및 다이렉트 뷰어 호출을 위해 URL 형태를 /dl/ 규격으로 자동 변경
+                                let viewUrl = response.data.url;
+                                if (viewUrl.includes('tmpfiles.org/')) {
+                                    viewUrl = viewUrl.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+                                }
+                                uploadedFiles[fileIndex].status = 'success';
+                                uploadedFiles[fileIndex].url = viewUrl;
+                            } else {
+                                uploadedFiles[fileIndex].status = 'error';
+                            }
+                        } catch (err) {
+                            uploadedFiles[fileIndex].status = 'error';
+                        }
+                    } else {
+                        uploadedFiles[fileIndex].status = 'error';
+                    }
+                    renderFileList();
+                    updateFormFileMetadata();
+                };
+
+                xhr.onerror = function() {
+                    const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
+                    if (fileIndex !== -1) {
+                        uploadedFiles[fileIndex].status = 'error';
+                        renderFileList();
+                        updateFormFileMetadata();
+                    }
+                };
+
+                xhr.send(formData);
+            } catch (err) {
+                const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
+                if (fileIndex !== -1) {
+                    uploadedFiles[fileIndex].status = 'error';
+                    renderFileList();
+                    updateFormFileMetadata();
+                }
+            }
+        }
+
+        // 파일 드래그 & 업로드 선택 처리기 (유니크 ID 체계 탑재)
+        function handleFileSelection(input) {
+            const files = input.files;
+            if (!files.length) return;
+
+            const maxFileSize = 100 * 1024 * 1024; // 100 MB
+            let skippedLargeFiles = false;
+            let limitExceeded = false;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                if (uploadedFiles.length >= 10) {
+                    limitExceeded = true;
+                    break;
+                }
+
+                if (file.size > maxFileSize) {
+                    skippedLargeFiles = true;
+                    continue;
+                }
+
+                const fileId = 'file_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                const newFileObj = {
+                    id: fileId,
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    status: 'uploading',
+                    progress: 0,
+                    url: '',
+                    file: file // 파일 원본 참조 보존
+                };
+
+                uploadedFiles.push(newFileObj);
+
+                // 비동기 클라우드 즉시 업로드 트리거
+                uploadFileToCloud(newFileObj);
+            }
+
+            input.value = ""; // 연속 첨부 보정
+
+            renderFileList();
+            updateFormFileMetadata();
+
+            if (limitExceeded) {
+                openCustomAlert("지원되는 파일을 최대 10개까지만 업로드할 수 있습니다.");
+            } else if (skippedLargeFiles) {
+                openCustomAlert("파일당 최대 크기는 100MB입니다. 초과된 파일은 자동 제외되었습니다.");
+            }
+        }
+
+        function removeUploadedFile(fileId) {
+            const index = uploadedFiles.findIndex(f => f.id === fileId);
+            if (index !== -1) {
+                uploadedFiles.splice(index, 1);
+                renderFileList();
+                updateFormFileMetadata();
+            }
+        }
+
+        // 실제 썸네일 미리보기(Thumbnail Preview) 기능을 탑재한 파일 리스트 드로잉
+        function renderFileList() {
+            const container = document.getElementById('file-list-container');
+            container.innerHTML = "";
+
+            if (uploadedFiles.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+
+            uploadedFiles.forEach((file) => {
+                const item = document.createElement('div');
+                item.className = "flex flex-col gap-2.5 p-3.5 bg-hironic-ivory border border-[#EBE6DD] rounded-2xl fade-in shadow-sm";
+                
+                const isImage = file.type.startsWith('image/');
+                const isVideo = file.type.startsWith('video/');
+                
+                // 이미지 파일인 경우 로컬 주소를 사용하여 섬네일 태그 구성
+                let thumbnailHTML = "";
+                if (isImage && file.file) {
+                    try {
+                        const localThumbUrl = URL.createObjectURL(file.file);
+                        thumbnailHTML = `
+                            <div class="w-14 h-14 rounded-xl overflow-hidden border border-gray-200 shrink-0 bg-gray-50 flex items-center justify-center">
+                                <img src="${localThumbUrl}" class="w-full h-full object-cover" onload="URL.revokeObjectURL('${localThumbUrl}')" />
+                            </div>
+                        `;
+                    } catch (e) {
+                        thumbnailHTML = `<div class="w-14 h-14 rounded-xl border border-gray-200 shrink-0 bg-gray-100 flex items-center justify-center"><i class="fa-regular fa-image text-gray-400"></i></div>`;
+                    }
+                } else {
+                    const iconClass = isVideo ? "fa-regular fa-file-video text-hironic-gold text-2xl" : "fa-regular fa-file-lines text-hironic-gold text-2xl";
+                    thumbnailHTML = `
+                        <div class="w-14 h-14 rounded-xl border border-gray-200 shrink-0 bg-gray-50 flex items-center justify-center">
+                            <i class="${iconClass}"></i>
+                        </div>
+                    `;
+                }
+
+                let statusHTML = "";
+                if (file.status === 'uploading') {
+                    statusHTML = `
+                        <div class="flex items-center gap-2 text-xs text-hironic-gold font-medium">
+                            <i class="fa-solid fa-circle-notch animate-spin"></i>
+                            <span>클라우드 전송 중 (${file.progress}%)</span>
+                        </div>
+                    `;
+                } else if (file.status === 'success') {
+                    statusHTML = `
+                        <div class="flex items-center gap-2 text-xs text-green-600 font-semibold">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>클라우드 연동 완료</span>
+                            <a href="${file.url}" target="_blank" class="hover:underline text-[11px] flex items-center gap-1 text-hironic-gold font-bold ml-1">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> 사진 보기
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    statusHTML = `
+                        <span class="text-xs text-red-500 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-triangle-exclamation"></i> 업로드 실패 (네트워크 확인)
+                        </span>
+                    `;
+                }
+
+                item.innerHTML = `
+                    <div class="flex items-center justify-between gap-3 min-w-0">
+                        <div class="flex items-center gap-3.5 min-w-0">
+                            ${thumbnailHTML}
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-xs md:text-sm font-semibold text-hironic-charcoal truncate">${file.name}</span>
+                                <span class="text-[10px] md:text-[11px] text-gray-400 font-medium">${formatBytes(file.size)}</span>
+                            </div>
+                        </div>
+                        <button type="button" onclick="removeUploadedFile('${file.id}')" class="text-gray-400 hover:text-red-500 p-1.5 transition-colors duration-150 shrink-0">
+                            <i class="fa-solid fa-xmark text-sm"></i>
+                        </button>
+                    </div>
+                    <!-- 상태 정보 및 프로그레스 표시 영역 -->
+                    <div class="flex items-center justify-between border-t border-gray-100/60 pt-2.5 mt-1">
+                        ${statusHTML}
+                        ${file.status === 'uploading' ? `
+                        <div class="w-24 bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                            <div class="bg-hironic-gold h-full" style="width: ${file.progress}%"></div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // 파일 텍스트 데이터를 영구적인 다운로드 링크 주소 목록으로 변환하여 메타 인풋에 바인딩
+        function updateFormFileMetadata() {
+            const metaInput = document.getElementById('input-media-link');
+            if (uploadedFiles.length === 0) {
+                metaInput.value = "첨부파일 없음"; // 구글 폼 필수 설정 오류를 방지하기 위해 빈 값이 아닌 디폴트 텍스트 바인딩
+                metaInput.classList.remove('border-red-500');
+            } else {
+                const fileUrls = uploadedFiles
+                    .filter(f => f.status === 'success' && f.url)
+                    .map((f, idx) => `${idx + 1}. [사진다운로드] ${f.url}`);
+                
+                const uploadingCount = uploadedFiles.filter(f => f.status === 'uploading').length;
+                let finalVal = fileUrls.join(" \n");
+                if (uploadingCount > 0) {
+                    finalVal += `\n (기타 ${uploadingCount}개 파일 전송 중...)`;
+                }
+
+                metaInput.value = finalVal;
+                metaInput.classList.remove('border-red-500');
+            }
+            updateProgress();
+        }
+
+        // 각 섹션별 엄격한 유효성 체크 (수동 핸들러)
+        function validateCurrentStep() {
+            let isValid = true;
+
+            if (currentStep === 1) {
+                const q1 = document.getElementById('input-hospital-name');
+                const q2 = document.getElementById('input-hospital-location');
+                const q3 = document.getElementById('input-contact-name');
+                const q4 = document.getElementById('input-contact-phone');
+                const q5Val = getCheckedRadioValue('entry.1658877534');
+
+                if (!q1.value.trim()) { q1.classList.add('border-red-500', 'shake'); setTimeout(() => q1.classList.remove('shake'), 400); isValid = false; }
+                if (!q2.value.trim()) { q2.classList.add('border-red-500', 'shake'); setTimeout(() => q2.classList.remove('shake'), 400); isValid = false; }
+                if (!q3.value.trim()) { q3.classList.add('border-red-500', 'shake'); setTimeout(() => q3.classList.remove('shake'), 400); isValid = false; }
+                if (!q4.value.trim()) { q4.classList.add('border-red-500', 'shake'); setTimeout(() => q4.classList.remove('shake'), 400); isValid = false; }
+                
+                if (!q5Val) {
+                    const q5Box = document.getElementById('faulty-product-container');
+                    q5Box.classList.add('shake');
+                    setTimeout(() => q5Box.classList.remove('shake'), 400);
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    openCustomAlert("1단계의 모든 필수 질문(*)에 알맞게 기재 혹은 선택해 주세요.");
+                }
+            }
+            else if (currentStep === 2) {
+                const productType = getCheckedRadioValue('entry.1658877534');
+
+                if (productType === "장비") {
+                    const q6Val = getCheckedRadioValue('entry.478248741');
+                    const q6EtcText = document.getElementById('etc-eq');
+                    const q7 = document.getElementById('input-eq-name');
+                    const q8 = document.getElementById('input-eq-serial');
+                    const q9 = document.getElementById('input-eq-usage');
+
+                    if (!q6Val) { isValid = false; }
+                    if (q6Val === '__other_option__' && !q6EtcText.value.trim()) {
+                        q6EtcText.classList.add('border-red-500');
+                        isValid = false;
+                    }
+                    if (!q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
+                    if (!q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
+                    if (!q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
+
+                } else if (productType === "카트리지") {
+                    const q6Val = getCheckedRadioValue('entry.2022084396');
+                    const q6EtcText = document.getElementById('etc-cart');
+                    const q7 = document.getElementById('input-cart-name');
+                    const q8 = document.getElementById('input-cart-serial');
+                    const q9 = document.getElementById('input-cart-usage');
+
+                    if (!q6Val) { isValid = false; }
+                    if (q6Val === '__other_option__' && !q6EtcText.value.trim()) {
+                        q6EtcText.classList.add('border-red-500');
+                        isValid = false;
+                    }
+                    if (!q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
+                    if (!q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
+                    if (!q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
+
+                } else if (productType === "핸드피스") {
+                    const q6Val = getCheckedRadioValue('entry.1206119229');
+                    const q6EtcText = document.getElementById('etc-hp');
+                    const q7 = document.getElementById('input-hp-name');
+                    const q8 = document.getElementById('input-hp-serial');
+                    const q9 = document.getElementById('input-hp-usage');
+
+                    if (!q6Val) { isValid = false; }
+                    if (q6Val === '__other_option__' && !q6EtcText.value.trim()) {
+                        q6EtcText.classList.add('border-red-500');
+                        isValid = false;
+                    }
+                    if (!q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
+                    if (!q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
+                    if (!q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
+
+                } else if (productType === "팁 or 노즐") {
+                    const q6Val = getCheckedRadioValue('entry.284306670');
+                    const q6EtcText = document.getElementById('etc-tip');
+                    const q7 = document.getElementById('input-tip-name');
+                    const q8 = document.getElementById('input-tip-serial');
+                    const q9 = document.getElementById('input-tip-usage');
+
+                    if (!q6Val) { isValid = false; }
+                    if (q6Val === '__other_option__' && !q6EtcText.value.trim()) {
+                        q6EtcText.classList.add('border-red-500');
+                        isValid = false;
+                    }
+                    if (!q7.value.trim()) { q7.classList.add('border-red-500'); isValid = false; }
+                    if (!q8.value.trim()) { q8.classList.add('border-red-500'); isValid = false; }
+                    if (!q9.value.trim()) { q9.classList.add('border-red-500'); isValid = false; }
+                }
+
+                if (!isValid) {
+                    openCustomAlert("현재 단계의 빈 항목(*) 및 상세 제품 명칭들을 모두 빠짐없이 기입해 주세요.");
+                }
+            }
+            else if (currentStep === 3) {
+                const q10 = document.getElementById('input-detailed-text');
+                let step3Valid = true;
+
+                if (!q10.value.trim() || q10.value.trim().length < 5) {
+                    q10.classList.add('border-red-500', 'shake');
+                    setTimeout(() => q10.classList.remove('shake'), 400);
+                    step3Valid = false;
+                }
+
+                // 파일이 등록되어 있을 때만 백그라운드 업로드 진행 상태 최종 검사 수행
+                if (uploadedFiles.length > 0) {
+                    const isAnyUploading = uploadedFiles.some(f => f.status === 'uploading');
+                    if (isAnyUploading) {
+                        openCustomAlert("아직 사진의 고해상도 연동이 완료되지 않았습니다. 전송 완료 후 다음으로 가실 수 있습니다.");
+                        return false;
+                    }
+                }
+
+                if (!step3Valid) {
+                    isValid = false;
+                    openCustomAlert("현재 겪으시는 장비 고장 내용을 최소 5자 이상 자유롭게 작성해 주세요.");
+                }
+            }
+
+            return isValid;
+        }
+
+        // 다단계 네비게이션 제어 핸들러
+        function handleNextStep() {
+            if (!validateCurrentStep()) return;
+
+            const productType = getCheckedRadioValue('entry.1658877534');
+
+            if (currentStep === 1) {
+                if (productType === "기타 소모품") {
+                    currentStep = 3;
+                    showActiveSection(3);
+                } else {
+                    currentStep = 2;
+                    showActiveSection(2);
+                }
+            } 
+            else if (currentStep === 2) {
+                currentStep = 3;
+                showActiveSection(3);
+            } 
+            else if (currentStep === 3) {
+                currentStep = 4;
+                showActiveSection(4);
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            updateProgress();
+        }
+
+        function handlePrevStep() {
+            const productType = getCheckedRadioValue('entry.1658877534');
+
+            if (currentStep === 4) {
+                currentStep = 3;
+                showActiveSection(3);
+            } 
+            else if (currentStep === 3) {
+                if (productType === "기타 소모품") {
+                    currentStep = 1;
+                    showActiveSection(1);
+                } else {
+                    currentStep = 2;
+                    showActiveSection(2);
+                }
+            } 
+            else if (currentStep === 2) {
+                currentStep = 1;
+                showActiveSection(1);
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            updateProgress();
+        }
+
+        function showActiveSection(step) {
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('section-equipment').classList.add('hidden');
+            document.getElementById('section-cartridge').classList.add('hidden');
+            document.getElementById('section-handpiece').classList.add('hidden');
+            document.getElementById('section-tip').classList.add('hidden');
+            document.getElementById('step-3').classList.add('hidden');
+            document.getElementById('step-4').classList.add('hidden');
+
+            document.getElementById('btn-prev').classList.add('hidden');
+            document.getElementById('btn-next').classList.add('hidden');
+            document.getElementById('btn-submit').classList.add('hidden');
+
+            const productType = getCheckedRadioValue('entry.1658877534');
+
+            if (step === 1) {
+                document.getElementById('step-1').classList.remove('hidden');
+                document.getElementById('btn-next').classList.remove('hidden');
+            } 
+            else if (step === 2) {
+                document.getElementById('btn-prev').classList.remove('hidden');
+                document.getElementById('btn-next').classList.remove('hidden');
+
+                if (productType === "장비") {
+                    document.getElementById('section-equipment').classList.remove('hidden');
+                } else if (productType === "카트리지") {
+                    document.getElementById('section-cartridge').classList.remove('hidden');
+                } else if (productType === "핸드피스") {
+                    document.getElementById('section-handpiece').classList.remove('hidden');
+                } else if (productType === "팁 or 노즐") {
+                    document.getElementById('section-tip').classList.remove('hidden');
+                }
+            } 
+            else if (step === 3) {
+                document.getElementById('step-3').classList.remove('hidden');
+                document.getElementById('btn-prev').classList.remove('hidden');
+                document.getElementById('btn-next').classList.remove('hidden');
+            } 
+            else if (step === 4) {
+                document.getElementById('step-4').classList.remove('hidden');
+                document.getElementById('btn-prev').classList.remove('hidden');
+                document.getElementById('btn-submit').classList.remove('hidden');
+            }
+        }
+
+        // 실시간 진척도 측정기
+        function updateProgress() {
+            let score = 0;
+
+            const q1 = document.getElementById('input-hospital-name').value.trim();
+            const q2 = document.getElementById('input-hospital-location').value.trim();
+            const q3 = document.getElementById('input-contact-name').value.trim();
+            const q4 = document.getElementById('input-contact-phone').value.trim();
+            const q5 = getCheckedRadioValue('entry.1658877534');
+
+            // 기본 정보 5문항: 각각 6점 가중치로 총 30점 할당
+            if (q1) score += 6;
+            if (q2) score += 6;
+            if (q3) score += 6;
+            if (q4) score += 6;
+            if (q5) score += 6;
+
+            if (q5) {
+                if (q5 === "기타 소모품") {
+                    score += 40; 
+                } else {
+                    let groupChoice = null;
+                    let subName = '';
+                    let subSerial = '';
+                    let subUsage = '';
+
+                    if (q5 === "장비") {
+                        groupChoice = getCheckedRadioValue('entry.478248741');
+                        subName = document.getElementById('input-eq-name').value.trim();
+                        subSerial = document.getElementById('input-eq-serial').value.trim();
+                        subUsage = document.getElementById('input-eq-usage').value.trim();
+                        if (groupChoice === '__other_option__' && document.getElementById('etc-eq').value.trim()) score += 10;
+                        else if (groupChoice && groupChoice !== '__other_option__') score += 10;
+                    } else if (q5 === "카트리지") {
+                        groupChoice = getCheckedRadioValue('entry.2022084396');
+                        subName = document.getElementById('input-cart-name').value.trim();
+                        subSerial = document.getElementById('input-cart-serial').value.trim();
+                        subUsage = document.getElementById('input-cart-usage').value.trim();
+                        if (groupChoice === '__other_option__' && document.getElementById('etc-cart').value.trim()) score += 10;
+                        else if (groupChoice && groupChoice !== '__other_option__') score += 10;
+                    } else if (q5 === "핸드피스") {
+                        groupChoice = getCheckedRadioValue('entry.1206119229');
+                        subName = document.getElementById('input-hp-name').value.trim();
+                        subSerial = document.getElementById('input-hp-serial').value.trim();
+                        subUsage = document.getElementById('input-hp-usage').value.trim();
+                        if (groupChoice === '__other_option__' && document.getElementById('etc-hp').value.trim()) score += 10;
+                        else if (groupChoice && groupChoice !== '__other_option__') score += 10;
+                    } else if (q5 === "팁 or 노즐") {
+                        groupChoice = getCheckedRadioValue('entry.284306670');
+                        subName = document.getElementById('input-tip-name').value.trim();
+                        subSerial = document.getElementById('input-tip-serial').value.trim();
+                        subUsage = document.getElementById('input-tip-usage').value.trim();
+                        if (groupChoice === '__other_option__' && document.getElementById('etc-tip').value.trim()) score += 10;
+                        else if (groupChoice && groupChoice !== '__other_option__') score += 10;
+                    }
+
+                    if (subName) score += 10;
+                    if (subSerial) score += 10;
+                    if (subUsage) score += 10;
+                }
+            }
+
+            // 10번 상세 접수 내용 입력: 15점 가중치 부여 (11번 문항이 빠짐에 따라 재조정)
+            const q10 = document.getElementById('input-detailed-text').value.trim();
+            if (q10.length >= 5) {
+                score += 15;
+            } else if (q10.length > 0) {
+                score += 5;
+            }
+
+            // [수정 사항]: 11번 사진 및 동영상 파일 업로드는 선택(Optional) 문항이므로 진척도 점수 계산에서 전면 제외(0점)
+
+            // 데모 신청 여부: 15점 가중치 부여
+            const demoChoice = getCheckedRadioValue('entry.1831314282');
+            if (demoChoice === '__other_option__' && document.getElementById('etc-demo').value.trim()) {
+                score += 15;
+            } else if (demoChoice && demoChoice !== '__other_option__') {
+                score += 15;
+            }
+
+            // 총합 가중치 100% 한계치 매핑
+            const percent = Math.min(Math.round(score), 100);
+            document.getElementById('progBar').style.width = percent + '%';
+            document.getElementById('progText').innerText = percent + '%';
+        }
+
+        // 비활성화 및 미선택 섹션의 구글 필수 데이터 중복 및 유실 검사를 통과시키는 지능형 폼 정합성 매핑 함수
+        function prepareFormForSubmission() {
+            const productType = getCheckedRadioValue('entry.1658877534');
+            const form = document.getElementById('hironicCustomForm');
+            
+            // 1. 모든 비활성 섹션 영역의 컨테이너들
+            const allSections = {
+                '장비': 'section-equipment',
+                '카트리지': 'section-cartridge',
+                '핸드피스': 'section-handpiece',
+                '팁 or 노즐': 'section-tip'
+            };
+
+            // 활성 섹션을 제외한 모든 비활성 섹션 내부의 input 요소를 완전히 disabled 시켜 전송에서 제외합니다.
+            // 이렇게 처리하면 파라미터가 불필요하게 꼬이거나 중복 전송되는 현상을 100% 차단하며,
+            // 구글 설문지에 '필수' 조건이 풀려있을 시, 선택하지 않은 섹션은 시트 내부에서 깨끗한 빈칸(Blank)으로 저장됩니다.
+            Object.keys(allSections).forEach(type => {
+                const containerId = allSections[type];
+                const container = document.getElementById(containerId);
+                if (container) {
+                    const inputs = container.querySelectorAll('input, select, textarea');
+                    if (type === productType) {
+                        // 활성 섹션: 전송 허용
+                        inputs.forEach(input => {
+                            // '기타 직접기입' 텍스트박스는 대응 라디오가 체크되었을 때만 전송 가능하게 제어
+                            if (input.id.startsWith('etc-')) {
+                                const radioEtc = document.getElementById('radio-' + input.id.split('-')[1] + '-etc');
+                                if (radioEtc && radioEtc.checked) {
+                                    input.disabled = false;
+                                } else {
+                                    input.disabled = true;
+                                }
+                            } else {
+                                input.disabled = false;
+                            }
+                        });
+                    } else {
+                        // 비활성 섹션: 전송 차단 (스프레드시트 빈칸 상태 유지)
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                        });
+                    }
+                }
+            });
+        }
+
+        // 최종 제출 및 구글 폼 다중 데이터 전송 처리기
+        function validateAndSubmit() {
+            if (submitted) return; // 중복 제출 방지
+
+            const demoChoice = getCheckedRadioValue('entry.1831314282');
+            if (!demoChoice) {
+                openCustomAlert("HIRONIC 20주년 특별 데모 프로모션에 대한 참여 혹은 관심없음 여부를 선택해 주세요.");
+                return;
+            }
+            if (demoChoice === '__other_option__' && !document.getElementById('etc-demo').value.trim()) {
+                const targetEtc = document.getElementById('etc-demo');
+                targetEtc.classList.add('border-red-500', 'shake');
+                setTimeout(() => targetEtc.classList.remove('shake'), 400);
+                openCustomAlert("기타 선택 시 어떤 기종의 무상 데모를 기재할지 상세 기입을 완성해 주세요.");
+                return;
+            }
+
+            const productType = getCheckedRadioValue('entry.1658877534');
+            const form = document.getElementById('hironicCustomForm');
+
+            // 1. 파일 첨부 결과가 비어있을 시 자동 디폴트 값 "첨부파일 없음" 인젝션 처리
+            const metaInput = document.getElementById('input-media-link');
+            if (!metaInput.value.trim()) {
+                metaInput.value = "첨부파일 없음";
+            }
+
+            // 2. 비활성 필드를 disabled 처리하여 완벽하고 빈틈없이 스프레드시트를 정리 (데이터 중복 충돌 방지)
+            prepareFormForSubmission();
+
+            // 3. 구글 폼 구조상 멀티 페이지 이정 제어
+            const existingHidden = document.querySelectorAll('.dynamic-page-history');
+            existingHidden.forEach(el => el.remove());
+
+            const pageHistoryInput = document.createElement('input');
+            pageHistoryInput.type = 'hidden';
+            pageHistoryInput.className = 'dynamic-page-history';
+            pageHistoryInput.name = 'pageHistory';
+
+            if (productType === "장비") {
+                pageHistoryInput.value = '0,1,5,6';
+            } else if (productType === "카트리지") {
+                pageHistoryInput.value = '0,2,5,6';
+            } else if (productType === "핸드피스") {
+                pageHistoryInput.value = '0,3,5,6';
+            } else if (productType === "팁 or 노즐") {
+                pageHistoryInput.value = '0,4,5,6';
+            } else {
+                pageHistoryInput.value = '0,5,6';
+            }
+            form.appendChild(pageHistoryInput);
+
+            // 버튼 비활성화 및 전송 중 로딩 상태 표시 (이중 제출 원천 차단)
+            const btnSubmit = document.getElementById('btn-submit');
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = `전송 중... <i class="fa-solid fa-circle-notch animate-spin text-xs"></i>`;
+
+            submitted = true;
+            form.submit();
+
+            // [모바일 대응 핵심 고도화]: 크로스도메인 iframe 로드를 모바일 브라우저나 인앱 브라우저가 강제 차단하더라도, 
+            // 실제 HTTP POST 요청은 전송 완료되므로 1200ms 후 비동기적으로 확실하게 성공화면으로 무조건 전환시킵니다.
+            setTimeout(() => {
+                handleSuccessTransition();
+            }, 1200);
+        }
+
+        function handleIframeOnload() {
+            // onload 이벤트 발생 시 타임아웃 대기 상태를 무시하고 즉시 성공 화면 전환 안전 트리거
+            if (submitted) {
+                handleSuccessTransition();
+            }
+        }
+
+        function handleSuccessTransition() {
+            if (successTransitioned) return; // 중복 실행 방지
+            successTransitioned = true;
+            document.getElementById('formContainer').classList.add('hidden');
+            document.getElementById('successScreen').classList.remove('hidden');
+        }
+
+        // 프로세스 안전 종료 및 네이티브 브라우저 창 닫기 트리거
+        function terminateProcess() {
+            // 1. 스크립트 오픈 트릭을 사용해 탭 종료 보안 해제 후 네이티브 닫기 시도
+            try {
+                window.open('', '_self', '');
+                window.close();
+            } catch (e) {
+                console.log("Standard window.close() blocked by client sandbox.");
+            }
+
+            // 2. 일반 종료 시도
+            try {
+                window.close();
+            } catch (e) {
+                console.log("Backup close execution.");
+            }
+            
+            // 3. 인앱 브라우저 및 강제 종료 거부 시 최종 폴백 (빈 주소 전환으로 완전 무인 프로세스 처리)
+            setTimeout(() => {
+                const successScreen = document.getElementById('successScreen');
+                if (successScreen) {
+                    successScreen.innerHTML = `
+                        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-3xl mb-6 shadow-sm fade-in">
+                            <i class="fa-solid fa-power-off"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-black text-gray-400 mb-3 fade-in">접수 프로세스가 완전히 종료되었습니다.</h2>
+                        <p class="text-gray-500 max-w-md mx-auto mb-4 text-sm leading-relaxed fade-in">
+                            스마트폰 브라우저의 뒤로가기 버튼 또는 상단의 [X] 버튼을 눌러 안전하게 창을 나가주시기 바랍니다.
+                        </p>
+                    `;
+                }
+            }, 100);
+        }
+
+        function resetForm() {
+            submitted = false;
+            successTransitioned = false;
+            uploadedFiles = [];
+            renderFileList();
+            updateFormFileMetadata();
+            
+            document.getElementById('hironicCustomForm').reset();
+            
+            // 기존 전송에 삽입되었던 플레이스홀더 전부 소거
+            const oldPlaceholders = document.querySelectorAll('.submission-placeholder');
+            oldPlaceholders.forEach(el => el.remove());
+
+            const allInputs = document.getElementById('hironicCustomForm').querySelectorAll('input, textarea');
+            allInputs.forEach(i => {
+                if (i.id !== 'etc-eq' && i.id !== 'etc-cart' && i.id !== 'etc-hp' && i.id !== 'etc-tip' && i.id !== 'etc-demo') {
+                    i.disabled = false;
+                } else {
+                    i.disabled = true;
+                }
+                i.classList.remove('border-red-500');
+            });
+            document.getElementById('input-detailed-text').classList.remove('border-red-500');
+            document.getElementById('input-media-link').classList.remove('border-red-500');
+
+            // 제출 버튼 원상 복구
+            const btnSubmit = document.getElementById('btn-submit');
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = `접수 제출하기 <i class="fa-solid fa-paper-plane text-xs"></i>`;
+
+            document.getElementById('successScreen').classList.add('hidden');
+            document.getElementById('formContainer').classList.remove('hidden');
+            
+            goToStep1();
+        }
+
+        function goToStep1() {
+            currentStep = 1;
+            showActiveSection(1);
+            updateProgress();
+        }
+    </script>
+</body>
+</html>
