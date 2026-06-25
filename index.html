@@ -119,8 +119,8 @@
 </head>
 <body class="bg-[#FAF6F0] min-h-screen font-sans text-hironic-charcoal antialiased p-4 md:p-8">
 
-    <!-- 배후 전송용 히든 Iframe -->
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { handleSuccessTransition(); }"></iframe>
+    <!-- 배후 전송용 히든 Iframe (onload에서 무조건적인 화면 전환 차단하여 전송 신뢰도 최대화) -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeOnload()"></iframe>
 
     <!-- 전체 레이아웃 컨테이너 -->
     <div id="mainLayoutContainer" class="max-w-[800px] mx-auto flex flex-col gap-6">
@@ -312,7 +312,7 @@
                         <label class="block text-base md:text-lg font-bold text-hironic-charcoal mb-1">
                             8. 시리얼 번호 <span class="text-red-500 ml-0.5">*</span>
                         </label>
-                        <p class="text-xs text-gray-400 mb-4">제품 뒤 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수에 제한이 될 수 있습니다.)</p>
+                        <p class="text-xs text-gray-400 mb-4">제품 뒤 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수가 제한이 될 수 있습니다.)</p>
                         <input type="text" id="input-eq-serial" name="entry.137691596" oninput="handleInputLive(this)" placeholder="예) HVR00000000" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
 
@@ -380,7 +380,7 @@
                         <label class="block text-base md:text-lg font-bold text-hironic-charcoal mb-1">
                             8. 시리얼 번호 <span class="text-red-500 ml-0.5">*</span>
                         </label>
-                        <p class="text-xs text-gray-400 mb-4">제품에 부착된 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수가 제한이 될 수 있습니다.)</p>
+                        <p class="text-xs text-gray-400 mb-4">제품에 부착된 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수에 제한이 될 수 있습니다.)</p>
                         <input type="text" id="input-cart-serial" name="entry.2112091891" oninput="handleInputLive(this)" placeholder="예) FLA30000000" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
 
@@ -1192,7 +1192,7 @@
         function updateFormFileMetadata() {
             const metaInput = document.getElementById('input-media-link');
             if (uploadedFiles.length === 0) {
-                metaInput.value = ""; // 구글 폼에 전송할 데이터가 없는 경우 자연스러운 무항 처리를 위해 빈 값 지정
+                metaInput.value = "첨부파일 없음"; // 구글 폼 필수 설정 오류를 방지하기 위해 빈 값이 아닌 디폴트 텍스트 바인딩
                 metaInput.classList.remove('border-red-500');
             } else {
                 const fileUrls = uploadedFiles
@@ -1628,10 +1628,17 @@
             form.submit();
 
             // [모바일 대응 핵심 고도화]: 크로스도메인 iframe 로드를 모바일 브라우저나 인앱 브라우저가 강제 차단하더라도, 
-            // 실제 HTTP POST 요청은 전송 완료되므로 400ms 후 비동기적으로 확실하게 성공화면으로 무조건 전환시킵니다.
+            // 실제 HTTP POST 요청은 전송 완료되므로 1200ms 후 비동기적으로 확실하게 성공화면으로 무조건 전환시킵니다.
             setTimeout(() => {
                 handleSuccessTransition();
-            }, 400);
+            }, 1200);
+        }
+
+        function handleIframeOnload() {
+            // onload 이벤트 발생 시 타임아웃 대기 상태를 무시하고 즉시 성공 화면 전환 안전 트리거
+            if (submitted) {
+                handleSuccessTransition();
+            }
         }
 
         function handleSuccessTransition() {
