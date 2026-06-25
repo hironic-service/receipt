@@ -119,7 +119,7 @@
 </head>
 <body class="bg-[#FAF6F0] min-h-screen font-sans text-hironic-charcoal antialiased p-4 md:p-8">
 
-    <!-- 배후 전송용 히든 Iframe (onload는 백업용으로 유지하되 메인 흐름은 타이머 동기화로 이중 트리거 방지) -->
+    <!-- 배후 전송용 히든 Iframe -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { handleSuccessTransition(); }"></iframe>
 
     <!-- 전체 레이아웃 컨테이너 -->
@@ -312,7 +312,7 @@
                         <label class="block text-base md:text-lg font-bold text-hironic-charcoal mb-1">
                             8. 시리얼 번호 <span class="text-red-500 ml-0.5">*</span>
                         </label>
-                        <p class="text-xs text-gray-400 mb-4">제품 뒤 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수가 제한이 될 수 있습니다.)</p>
+                        <p class="text-xs text-gray-400 mb-4">제품 뒤 스티커에 기재된 제품의 시리얼 번호를 입력해 주세요. (정확한 시리얼 번호를 기재하지 않으면 서비스 접수에 제한이 될 수 있습니다.)</p>
                         <input type="text" id="input-eq-serial" name="entry.137691596" oninput="handleInputLive(this)" placeholder="예) HVR00000000" class="w-full px-5 py-3.5 bg-hironic-inputBg border border-[#EBE6DD] rounded-2xl focus:border-hironic-gold focus:bg-white outline-none transition-all duration-200 text-hironic-charcoal placeholder-gray-400 text-sm md:text-base">
                     </div>
 
@@ -1527,79 +1527,43 @@
             const productType = getCheckedRadioValue('entry.1658877534');
             const form = document.getElementById('hironicCustomForm');
             
-            // 1. 혹시 남아있을 수 있는 이전 임시 플레이스홀더 히든 인풋 완전 삭제
-            const oldPlaceholders = form.querySelectorAll('.submission-placeholder');
-            oldPlaceholders.forEach(el => el.remove());
-
-            // 2. 모든 섹션의 인풋 요소의 기본 전송 속성(disabled 해제) 초기화
-            const allFormInputs = form.querySelectorAll('input, textarea');
-            allFormInputs.forEach(input => {
-                if (!input.id.startsWith('etc-')) {
-                    input.disabled = false;
-                }
-            });
-
-            // 각 선택 분기별 파라미터 구조 정의
-            const sections = {
-                '장비': {
-                    radioName: 'entry.478248741',
-                    radioEtcId: 'etc-eq',
-                    textIds: ['input-eq-name', 'input-eq-serial', 'input-eq-usage']
-                },
-                '카트리지': {
-                    radioName: 'entry.2022084396',
-                    radioEtcId: 'etc-cart',
-                    textIds: ['input-cart-name', 'input-cart-serial', 'input-cart-usage']
-                },
-                '핸드피스': {
-                    radioName: 'entry.1206119229',
-                    radioEtcId: 'etc-hp',
-                    textIds: ['input-hp-name', 'input-hp-serial', 'input-hp-usage']
-                },
-                '팁 or 노즐': {
-                    radioName: 'entry.284306670',
-                    radioEtcId: 'etc-tip',
-                    textIds: ['input-tip-name', 'input-tip-serial', 'input-tip-usage']
-                }
+            // 1. 모든 비활성 섹션 영역의 컨테이너들
+            const allSections = {
+                '장비': 'section-equipment',
+                '카트리지': 'section-cartridge',
+                '핸드피스': 'section-handpiece',
+                '팁 or 노즐': 'section-tip'
             };
 
-            // 3. 섹션 파라미터 루프를 돌며 비활성 영역과 활성 영역의 전송 데이터를 단일 키(No-Duplicate) 구조로 완전 매칭
-            Object.keys(sections).forEach(type => {
-                const sec = sections[type];
-                if (type === productType) {
-                    // [활성 섹션]: 실제 전송되도록 데이터 속성 보존
-                    const radios = document.querySelectorAll(`input[name="${sec.radioName}"]`);
-                    radios.forEach(r => r.disabled = false);
-
-                    const checkedRadio = document.querySelector(`input[name="${sec.radioName}"]:checked`);
-                    if (checkedRadio && checkedRadio.value === '__other_option__') {
-                        document.getElementById(sec.radioEtcId).disabled = false;
+            // 활성 섹션을 제외한 모든 비활성 섹션 내부의 input 요소를 완전히 disabled 시켜 전송에서 제외합니다.
+            // 이렇게 처리하면 파라미터가 불필요하게 꼬이거나 중복 전송되는 현상을 100% 차단하며,
+            // 구글 설문지에 '필수' 조건이 풀려있을 시, 선택하지 않은 섹션은 시트 내부에서 깨끗한 빈칸(Blank)으로 저장됩니다.
+            Object.keys(allSections).forEach(type => {
+                const containerId = allSections[type];
+                const container = document.getElementById(containerId);
+                if (container) {
+                    const inputs = container.querySelectorAll('input, select, textarea');
+                    if (type === productType) {
+                        // 활성 섹션: 전송 허용
+                        inputs.forEach(input => {
+                            // '기타 직접기입' 텍스트박스는 대응 라디오가 체크되었을 때만 전송 가능하게 제어
+                            if (input.id.startsWith('etc-')) {
+                                const radioEtc = document.getElementById('radio-' + input.id.split('-')[1] + '-etc');
+                                if (radioEtc && radioEtc.checked) {
+                                    input.disabled = false;
+                                } else {
+                                    input.disabled = true;
+                                }
+                            } else {
+                                input.disabled = false;
+                            }
+                        });
+                    } else {
+                        // 비활성 섹션: 전송 차단 (스프레드시트 빈칸 상태 유지)
+                        inputs.forEach(input => {
+                            input.disabled = true;
+                        });
                     }
-                } else {
-                    // [비활성 섹션]: 구글 폼 필수 조건 우회를 위해 데이터 일괄 바인딩
-                    // 기존 동일명 라디오를 일시적 비활성화(disabled)하여 파라미터 중복 충돌 차단
-                    const radios = document.querySelectorAll(`input[name="${sec.radioName}"]`);
-                    radios.forEach(r => r.disabled = true);
-
-                    const etcInput = document.getElementById(sec.radioEtcId);
-                    if (etcInput) etcInput.disabled = true;
-
-                    // 단 하나의 단독 히든 플레이스홀더를 동적 생성하여 안전하게 연동
-                    const hiddenRadioPlaceholder = document.createElement('input');
-                    hiddenRadioPlaceholder.type = 'hidden';
-                    hiddenRadioPlaceholder.className = 'submission-placeholder';
-                    hiddenRadioPlaceholder.name = sec.radioName;
-                    hiddenRadioPlaceholder.value = '-';
-                    form.appendChild(hiddenRadioPlaceholder);
-
-                    // 텍스트 인풋들은 직접 해당 엘리먼트 값에 "-"를 입력시켜 이중 전송 오류 방지
-                    sec.textIds.forEach(id => {
-                        const txtInput = document.getElementById(id);
-                        if (txtInput) {
-                            txtInput.value = '-';
-                            txtInput.disabled = false; // 전송에 누락되지 않도록 enabled로 유지
-                        }
-                    });
                 }
             });
         }
@@ -1630,7 +1594,7 @@
                 metaInput.value = "첨부파일 없음";
             }
 
-            // 2. 구글 필수 문항 강제 유효성 통과 및 파라미터 충돌 회피 처리 실행
+            // 2. 비활성 필드를 disabled 처리하여 완벽하고 빈틈없이 스프레드시트를 정리 (데이터 중복 충돌 방지)
             prepareFormForSubmission();
 
             // 3. 구글 폼 구조상 멀티 페이지 이정 제어
@@ -1696,7 +1660,18 @@
             
             // 3. 인앱 브라우저 및 강제 종료 거부 시 최종 폴백 (빈 주소 전환으로 완전 무인 프로세스 처리)
             setTimeout(() => {
-                window.location.href = "about:blank";
+                const successScreen = document.getElementById('successScreen');
+                if (successScreen) {
+                    successScreen.innerHTML = `
+                        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-3xl mb-6 shadow-sm fade-in">
+                            <i class="fa-solid fa-power-off"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-black text-gray-400 mb-3 fade-in">접수 프로세스가 완전히 종료되었습니다.</h2>
+                        <p class="text-gray-500 max-w-md mx-auto mb-4 text-sm leading-relaxed fade-in">
+                            스마트폰 브라우저의 뒤로가기 버튼 또는 상단의 [X] 버튼을 눌러 안전하게 창을 나가주시기 바랍니다.
+                        </p>
+                    `;
+                }
             }, 100);
         }
 
