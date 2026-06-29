@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <!-- STREAMING_CHUNK:설정 및 외부 스타일 시트 선언... -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HIRONIC 서비스 접수 Systems</title>
@@ -120,9 +119,6 @@
 </head>
 <body class="bg-[#FAF6F0] min-h-screen font-sans text-hironic-charcoal antialiased p-4 md:p-8">
 
-    <!-- 배후 전송용 히든 Iframe (Fetch API 백업 지원용) -->
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-
     <!-- 전체 레이아웃 컨테이너 -->
     <div id="mainLayoutContainer" class="max-w-[800px] mx-auto flex flex-col gap-6 pb-32 sm:pb-8">
 
@@ -144,9 +140,8 @@
         <!-- 메인 인터랙티브 서비스 폼 컨테이너 -->
         <div class="flex flex-col gap-6" id="formContainer">
             
-            <form id="hironicCustomForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdRh8eY4x0XFhEJtot0k-b7xTnWyzctoa-iZ31TWFWlgmt_EA/formResponse" method="POST" target="hidden_iframe" class="flex flex-col gap-6">
+            <form id="hironicCustomForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdRh8eY4x0XFhEJtot0k-b7xTnWyzctoa-iZ31TWFWlgmt_EA/formResponse" method="POST" class="flex flex-col gap-6">
                 
-                <!-- STREAMING_CHUNK:프리미엄 로고 및 사선 배경 헤더 배너 선언... -->
                 <div class="bg-white rounded-3xl overflow-hidden shadow-[0_4px_25px_rgba(30,34,41,0.04)] border border-hironic-border relative flex flex-col">
                     
                     <!-- 골드 그라데이션 프리미엄 순수 반응형 헤더 (image_2f30e1.png 로고 스타일 및 배지 상시 노출 적용 완료) -->
@@ -207,7 +202,6 @@
                 </div>
 
                 <!-- ================= STEP 1: SECTION 1 (공통 기본 인적사항) ================= -->
-                <!-- STREAMING_CHUNK:기본 정보 입력 카드(1단계) 렌더링... -->
                 <div id="step-1" class="flex flex-col gap-6 fade-in">
                     
                     <!-- Question 1: Hospital Name -->
@@ -281,7 +275,6 @@
                 </div>
 
                 <!-- ================= STEP 2: SECTION 2 (장비 선택 시 이동) ================= -->
-                <!-- STREAMING_CHUNK:상세 정보 입력 카드(2단계) 렌더링... -->
                 <div id="section-equipment" class="hidden flex flex-col gap-6 fade-in">
                     <!-- Q6: 고장 장비 제품군 -->
                     <div class="card-question bg-white rounded-3xl p-6 md:p-8 shadow-[0_4px_20px_rgba(30,34,41,0.03)] border border-hironic-border transition-all duration-300">
@@ -582,7 +575,6 @@
                 </div>
 
                 <!-- ================= STEP 3: SECTION 6 (상세 접수 및 미디어 파일 첨부) ================= -->
-                <!-- STREAMING_CHUNK:상세 증상 기재 및 파일 첨부(3단계) 렌더링... -->
                 <div id="step-3" class="hidden flex flex-col gap-6 fade-in">
                     <!-- Q10: 상세 접수 내용 입력 -->
                     <div class="card-question bg-white rounded-3xl p-6 md:p-8 shadow-[0_4px_20px_rgba(30,34,41,0.03)] border border-hironic-border transition-all duration-300 focus-within:border-hironic-gold focus-within:shadow-md">
@@ -611,7 +603,7 @@
                                 파일 추가
                             </button>
 
-                            <div id="file-list-container" class="hidden flex flex-col gap-2.5 mt-2 max-h-[350px] overflow-y-auto custom-scrollbar">
+                            <div id="file-list-container" style="display:none;" class="flex flex-col gap-2.5 mt-2 max-h-[350px] overflow-y-auto custom-scrollbar">
                                 </div>
                         </div>
 
@@ -620,7 +612,6 @@
                 </div>
 
                 <!-- ================= STEP 4: SECTION 7 (HIRONIC 20주년 프로모션 데모) ================= -->
-                <!-- STREAMING_CHUNK:HIRONIC 20주년 프로모션 이벤트(4단계) 렌더링... -->
                 <div id="step-4" class="hidden flex flex-col gap-6 fade-in">
                     
                     <!-- 20th Anniversary Invite Card Banner -->
@@ -668,8 +659,8 @@
                                 <span class="text-sm font-medium text-gray-700">PICOHI300</span>
                             </label>
                             <label class="choice-label flex items-center gap-3.5 py-4 px-5 bg-[#FAF8F5] border border-[#EBE6DD] rounded-2xl cursor-pointer hover:bg-hironic-goldLight/40 hover:border-hironic-gold/40 transition-all duration-200 select-none col-span-1">
-                                <input type="radio" name="entry.1831314282" value="관심없음" onclick="handleRadioWithEtc(this, 'etc-demo')" class="custom-radio-input">
-                                <span class="text-sm font-medium text-gray-700">관심없음</span>
+                                <input type="radio" name="entry.1831314282" value="관심 없음" onclick="handleRadioWithEtc(this, 'etc-demo')" class="custom-radio-input">
+                                <span class="text-sm font-medium text-gray-700">관심 없음</span>
                             </label>
                             
                             <!-- 인라인 기타 카드 -->
@@ -682,7 +673,6 @@
                     </div>
                 </div>
 
-                <!-- STREAMING_CHUNK:실시간 진척도 및 단계 이동 하단 바 렌더링... -->
                 <!-- Form Dynamic Control Button & Navigation bar footer (Sticky Bottom on Mobile) -->
                 <div class="fixed bottom-0 left-0 right-0 sm:relative sm:bottom-auto z-40 bg-white/95 backdrop-blur-md sm:bg-white p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:p-8 border-t sm:border border-hironic-border sm:rounded-3xl shadow-[0_-8px_24px_rgba(30,34,41,0.06)] sm:shadow-[0_4px_25px_rgba(30,34,41,0.04)] flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-5 animate-fade-in">
                     
@@ -734,23 +724,16 @@
 
     </div>
 
-    <!-- 완전 복원된 완결형 JavaScript 컨트롤러 블록 -->
     <script>
         let submitted = false;
-        let successTransitioned = false; // 성공 화면 이중 전환 방지 플래그
-        let currentStep = 1; 
-        let uploadedFiles = []; // 업로드된 파일 객체 관리 배열 (최대 10개)
+        let successTransitioned = false;
+        let currentStep = 1;
+        let uploadedFiles = [];
 
         window.onload = function () {
-            // 히든 아이프레임 로드 이벤트를 브라우저 호환성을 고려해 수동 바인딩
-            const iframe = document.getElementById('hidden_iframe');
-            if (iframe) {
-                iframe.onload = handleIframeOnload;
-            }
             updateProgress();
         }
 
-        // ----------------- CONDITION AND STEP LOGIC -----------------
         function openCustomAlert(text) {
             const customAlert = document.getElementById('custom-alert');
             const customAlertText = document.getElementById('custom-alert-text');
@@ -767,7 +750,6 @@
             }
         }
 
-        // 입력 라이브 피드백
         function handleInputLive(element) {
             if (element && element.value.trim() !== "") {
                 element.classList.remove('border-red-500');
@@ -775,7 +757,6 @@
             updateProgress();
         }
 
-        // 라디오 이벤트 및 예외 인풋 제어
         function handleRadioWithEtc(radioElement, targetInputId) {
             const targetInput = document.getElementById(targetInputId);
             
@@ -821,8 +802,6 @@
             return checked ? checked.value : null;
         }
 
-        // /* STREAMING_CHUNK:실시간 진척도 측정기 스크립트 작성... */
-        // 실시간 진척도 측정기 (안전 체이닝 설계 및 변수 재선언 중복 버그 영구 해결)
         function updateProgress() {
             let score = 0;
 
@@ -913,50 +892,16 @@
             if (progText) progText.innerText = percent + '%';
         }
 
-        // 비활성화 및 미선택 섹션의 구글 필수 데이터 중복 및 유실 검사를 통과시키는 지능형 폼 정합성 매핑 함수
-        function prepareFormForSubmission() {
-            const productType = getCheckedRadioValue('entry.1658877534');
-            const form = document.getElementById('hironicCustomForm');
-            
-            // 모든 비활성 섹션 영역의 컨테이너들
-            const allSections = {
-                '장비': 'section-equipment',
-                '카트리지': 'section-cartridge',
-                '핸드피스': 'section-handpiece',
-                '팁 or 노즐': 'section-tip'
-            };
-
-            // 활성 섹션을 제외한 모든 비활성 섹션 내부의 input 요소를 완전히 disabled 시켜 전송에서 제외합니다.
-            Object.keys(allSections).forEach(type => {
-                const containerId = allSections[type];
-                const container = document.getElementById(containerId);
-                if (container) {
-                    const inputs = container.querySelectorAll('input, select, textarea');
-                    if (type === productType) {
-                        inputs.forEach(input => {
-                            if (input.id.startsWith('etc-')) {
-                                const radioEtc = document.getElementById('radio-' + input.id.split('-')[1] + '-etc');
-                                if (radioEtc && radioEtc.checked) {
-                                    input.disabled = false;
-                                } else {
-                                    input.disabled = true;
-                                }
-                            } else {
-                                input.disabled = false;
-                            }
-                        });
-                    } else {
-                        inputs.forEach(input => {
-                            input.disabled = true;
-                        });
-                    }
-                }
-            });
-        }
-
-        // ----------------- FILE UPLOAD UI LOGIC -----------------
         function triggerFileSelect() {
             document.getElementById('real-file-input')?.click();
+        }
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + ' ' + sizes[i];
         }
 
         function handleFileSelection(input) {
@@ -1008,8 +953,6 @@
             }
         }
 
-        // /* STREAMING_CHUNK:3중 안심 백업 파일 업로드 엔진 스크립트 작성... */
-        // 4단계 분산 및 최신 Platzi 업로드 엔진 탑재 (CORS 제약 및 안드로이드 웹뷰 차단 보안 완벽 극복)
         async function uploadFileToCloud(fileObj) {
             const uploadServers = [
                 {
@@ -1066,7 +1009,6 @@
                 }
             ];
 
-            // 개별 서버 전송 샌드박스 예외 차단 완화기
             async function tryUpload(serverIndex) {
                 if (serverIndex >= uploadServers.length) {
                     throw new Error('All upload servers failed');
@@ -1116,35 +1058,23 @@
                 });
             }
 
-            // 순차적 Cascading 업로드 트리거 및 샌드박스 완벽 대비 로컬 폴백 (Blob URL을 이용하여 네트워크 오프라인 상태에서도 무조건 첨부 성공!)
             try {
                 let finalUrl = "";
                 try {
-                    // 1. Platzi JS API 시도 (CORS 해제, 매우 안정적이고 빠름)
-                    finalUrl = await tryUpload(0);
+                    finalUrl = await tryUpload(0); // Platzi
                 } catch (e0) {
-                    console.warn("Primary upload failed, trying fallback 1 (tmpfiles):", e0);
                     try {
-                        // 2. Tmpfiles 시도
-                        finalUrl = await tryUpload(1);
+                        finalUrl = await tryUpload(1); // tmpfiles
                     } catch (e1) {
-                        console.warn("Fallback 1 failed, trying fallback 2 (pixeldrain):", e1);
                         try {
-                            // 3. Pixeldrain 시도
-                            finalUrl = await tryUpload(2);
+                            finalUrl = await tryUpload(2); // pixeldrain
                         } catch (e2) {
-                            console.warn("Fallback 2 failed, trying fallback 3 (file.io):", e2);
                             try {
-                                // 4. File.io 시도
-                                finalUrl = await tryUpload(3);
+                                finalUrl = await tryUpload(3); // file.io
                             } catch (e3) {
-                                // [샌드박스 철벽 보정]: 네트워크 장벽이나 iframe 제어 블록 시 내장 ObjectURL로 무조건 연동 성공 완료 처리!
-                                console.warn("All external APIs blocked or returned CORS error. Falling back to secure local Object URL.");
                                 try {
                                     finalUrl = URL.createObjectURL(fileObj.file);
                                 } catch (e4) {
-                                    // URL.createObjectURL 마저 iframe 고유오리진 보안정책으로 차단될 시, 100% 안전하고 만능인 로컬 인라인 Base64 FileReader 가동!
-                                    console.warn("ObjectURL failed. Falling back to FileReader Base64...");
                                     try {
                                         finalUrl = await readFileAsDataURL(fileObj.file);
                                     } catch (e5) {
@@ -1156,7 +1086,6 @@
                     }
                 }
 
-                // 업로드 최종 성공 및 파일 리스트 바인딩
                 const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
                 if (fileIndex !== -1) {
                     uploadedFiles[fileIndex].status = 'success';
@@ -1165,7 +1094,6 @@
                     updateFormFileMetadata();
                 }
             } catch (error) {
-                console.error("Cascading file upload completely failed:", error);
                 const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
                 if (fileIndex !== -1) {
                     uploadedFiles[fileIndex].status = 'error';
@@ -1175,7 +1103,6 @@
             }
         }
 
-        // 샌드박스 iframe 환경에서 유일 오리진 보안 제한을 100% 통과해 로컬에서 Base64로 즉시 변환하는 만능 함수
         function readFileAsDataURL(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -1189,7 +1116,6 @@
             });
         }
 
-        // 업로드 파일 제거 로직 완전 탑재 (메모리 누수 차단)!
         function removeUploadedFile(fileId) {
             const index = uploadedFiles.findIndex(f => f.id === fileId);
             if (index !== -1) {
@@ -1197,9 +1123,7 @@
                 if (file.thumbnailUrl) {
                     try {
                         URL.revokeObjectURL(file.thumbnailUrl);
-                    } catch (e) {
-                        console.warn("Blob URL revoke failed (S23 protection fallback)");
-                    }
+                    } catch (e) {}
                 }
                 uploadedFiles.splice(index, 1);
                 renderFileList();
@@ -1207,18 +1131,17 @@
             }
         }
 
-        // [중요 고도화]: 썸네일 생성 플리커링 오류 및 갤럭시 S23 보안 에러를 해소한 실시간 업로드 현황 렌더러
         function renderFileList() {
             const container = document.getElementById('file-list-container');
             if (!container) return;
             container.innerHTML = "";
 
             if (uploadedFiles.length === 0) {
-                container.classList.add('hidden');
+                container.style.display = 'none';
                 return;
             }
 
-            container.classList.remove('hidden');
+            container.style.display = 'flex';
 
             uploadedFiles.forEach((file) => {
                 const item = document.createElement('div');
@@ -1314,10 +1237,8 @@
                 `;
                 container.appendChild(item);
             });
-            container.classList.remove('hidden');
         }
 
-        // 각 섹션별 엄격한 유효성 체크 및 다단계 네비게이션 제어
         function validateCurrentStep() {
             let isValid = true;
 
@@ -1542,10 +1463,8 @@
             }
         }
 
-        // /* STREAMING_CHUNK:구글 폼 백그라운드 데이터 정합성 전송 엔진 작성... */
-        // 최종 제출 및 구글 폼 다중 데이터 전송 처리기
         async function validateAndSubmit() {
-            if (submitted) return; // 중복 제출 방지
+            if (submitted) return;
 
             const demoChoice = getCheckedRadioValue('entry.1831314282');
             if (!demoChoice) {
@@ -1560,7 +1479,6 @@
                 return;
             }
 
-            // 버튼 비활성화 및 전송 중 로딩 상태 표시 (이중 제출 원천 차단)
             const btnSubmit = document.getElementById('btn-submit');
             if (btnSubmit) {
                 btnSubmit.disabled = true;
@@ -1569,150 +1487,92 @@
 
             submitted = true;
 
-            // 1. 모든 인풋 요소 활성화 (disabled 해제) 하여 온전히 전송 가능하도록 셋업
             const form = document.getElementById('hironicCustomForm');
-            const allInputs = form.querySelectorAll('input, textarea, select');
-            allInputs.forEach(input => {
-                input.disabled = false;
-            });
 
-            // 2. 가상 Fallback 매핑용 URLSearchParams 생성
-            const params = new URLSearchParams();
-            
-            // 공통 기본 영역
-            params.append('entry.1151304436', document.getElementById('input-hospital-name')?.value || '-');
-            params.append('entry.1623859406', document.getElementById('input-hospital-location')?.value || '-');
-            params.append('entry.1665891340', (document.getElementById('input-contact-name') || document.getElementById('contact-name'))?.value || '-');
-            params.append('entry.1324620204', document.getElementById('input-contact-phone')?.value || '-');
-            
             const productType = getCheckedRadioValue('entry.1658877534') || '-';
-            params.append('entry.1658877534', productType);
+            const demoVal = demoChoice;
 
-            // 각 카테고리별 정합 전송 패스
+            const fields = {
+                'entry.1151304436': document.getElementById('input-hospital-name')?.value || '-',
+                'entry.1623859406': document.getElementById('input-hospital-location')?.value || '-',
+                'entry.1665891340': (document.getElementById('input-contact-name') || document.getElementById('contact-name'))?.value || '-',
+                'entry.1324620204': document.getElementById('input-contact-phone')?.value || '-',
+                'entry.1658877534': productType,
+            };
+
             if (productType === "장비") {
                 const eqGroup = getCheckedRadioValue('entry.478248741') || '-';
-                params.append('entry.478248741', eqGroup);
-                if (eqGroup === '__other_option__') {
-                    params.append('entry.478248741.other_option_response', document.getElementById('etc-eq')?.value || '-');
-                }
-                params.append('entry.1338509668', document.getElementById('input-eq-name')?.value || '-');
-                params.append('entry.137691596', document.getElementById('input-eq-serial')?.value || '-');
-                params.append('entry.611804549', document.getElementById('input-eq-usage')?.value || '-');
+                fields['entry.478248741'] = eqGroup;
+                if (eqGroup === '__other_option__') fields['entry.478248741.other_option_response'] = document.getElementById('etc-eq')?.value || '-';
+                fields['entry.1338509668'] = document.getElementById('input-eq-name')?.value || '-';
+                fields['entry.137691596'] = document.getElementById('input-eq-serial')?.value || '-';
+                fields['entry.611804549'] = document.getElementById('input-eq-usage')?.value || '-';
             } else if (productType === "카트리지") {
                 const cartGroup = getCheckedRadioValue('entry.2022084396') || '-';
-                params.append('entry.2022084396', cartGroup);
-                if (cartGroup === '__other_option__') {
-                    params.append('entry.2022084396.other_option_response', document.getElementById('etc-cart')?.value || '-');
-                }
-                params.append('entry.186327438', document.getElementById('input-cart-name')?.value || '-');
-                params.append('entry.2112091891', document.getElementById('input-cart-serial')?.value || '-');
-                params.append('entry.1226825078', document.getElementById('input-cart-usage')?.value || '-');
+                fields['entry.2022084396'] = cartGroup;
+                if (cartGroup === '__other_option__') fields['entry.2022084396.other_option_response'] = document.getElementById('etc-cart')?.value || '-';
+                fields['entry.186327438'] = document.getElementById('input-cart-name')?.value || '-';
+                fields['entry.2112091891'] = document.getElementById('input-cart-serial')?.value || '-';
+                fields['entry.1226825078'] = document.getElementById('input-cart-usage')?.value || '-';
             } else if (productType === "핸드피스") {
                 const hpGroup = getCheckedRadioValue('entry.1206119229') || '-';
-                params.append('entry.1206119229', hpGroup);
-                if (hpGroup === '__other_option__') {
-                    params.append('entry.1206119229.other_option_response', document.getElementById('etc-hp')?.value || '-');
-                }
-                params.append('entry.60920181', document.getElementById('input-hp-name')?.value || '-');
-                params.append('entry.2086382309', document.getElementById('input-hp-serial')?.value || '-');
-                params.append('entry.988708164', document.getElementById('input-hp-usage')?.value || '-');
+                fields['entry.1206119229'] = hpGroup;
+                if (hpGroup === '__other_option__') fields['entry.1206119229.other_option_response'] = document.getElementById('etc-hp')?.value || '-';
+                fields['entry.60920181'] = document.getElementById('input-hp-name')?.value || '-';
+                fields['entry.2086382309'] = document.getElementById('input-hp-serial')?.value || '-';
+                fields['entry.988708164'] = document.getElementById('input-hp-usage')?.value || '-';
             } else if (productType === "팁 or 노즐") {
                 const tipGroup = getCheckedRadioValue('entry.284306670') || '-';
-                params.append('entry.284306670', tipGroup);
-                if (tipGroup === '__other_option__') {
-                    params.append('entry.284306670.other_option_response', document.getElementById('etc-tip')?.value || '-');
-                }
-                params.append('entry.890467631', document.getElementById('input-tip-name')?.value || '-');
-                params.append('entry.769820055', document.getElementById('input-tip-serial')?.value || '-');
-                params.append('entry.602978248', document.getElementById('input-tip-usage')?.value || '-');
+                fields['entry.284306670'] = tipGroup;
+                if (tipGroup === '__other_option__') fields['entry.284306670.other_option_response'] = document.getElementById('etc-tip')?.value || '-';
+                fields['entry.890467631'] = document.getElementById('input-tip-name')?.value || '-';
+                fields['entry.769820055'] = document.getElementById('input-tip-serial')?.value || '-';
+                fields['entry.602978248'] = document.getElementById('input-tip-usage')?.value || '-';
             }
 
-            // 상세 내용 및 업로드
-            params.append('entry.507533110', document.getElementById('input-detailed-text')?.value || '-');
+            fields['entry.507533110'] = document.getElementById('input-detailed-text')?.value || '-';
             const metaInput = document.getElementById('input-media-link');
-            const mediaVal = metaInput && metaInput.value.trim() ? metaInput.value : '첨부파일 없음';
-            params.append('entry.1067959635', mediaVal);
+            fields['entry.1067959635'] = (metaInput && metaInput.value.trim()) ? metaInput.value : '첨부파일 없음';
+            fields['entry.1831314282'] = demoVal;
+            if (demoVal === '__other_option__') fields['entry.1831314282.other_option_response'] = document.getElementById('etc-demo')?.value || '-';
 
-            // 데모 신청
-            params.append('entry.1831314282', demoChoice);
-            if (demoChoice === '__other_option__') {
-                params.append('entry.1831314282.other_option_response', document.getElementById('etc-demo')?.value || '-');
-            }
-
-            // 히스토리 매핑
             let pageHistory = '0,5,6';
             if (productType === "장비") pageHistory = '0,1,5,6';
             else if (productType === "카트리지") pageHistory = '0,2,5,6';
             else if (productType === "핸드피스") pageHistory = '0,3,5,6';
             else if (productType === "팁 or 노즐") pageHistory = '0,4,5,6';
-            params.append('pageHistory', pageHistory);
+            fields['pageHistory'] = pageHistory;
 
-            // 3. 백업용 iframe Fallback 전송 대비 (네이티브 Submit 시에도 비활성 값들이 params에서 누락되어 올바른 History만 전달되도록 조치)
-            allInputs.forEach(input => {
-                if (input.name) {
-                    const parentSec = input.closest('#section-equipment, #section-cartridge, #section-handpiece, #section-tip');
-                    if (parentSec) {
-                        const secId = parentSec.id;
-                        const isActive = 
-                            (secId === 'section-equipment' && productType === "장비") ||
-                            (secId === 'section-cartridge' && productType === "카트리지") ||
-                            (secId === 'section-handpiece' && productType === "핸드피스") ||
-                            (secId === 'section-tip' && productType === "팁 or 노즐");
-                        
-                        if (!isActive) {
-                            input.disabled = true; // disabled 처리하여 필수체크 회피
-                        }
-                    }
-                }
+            const submitUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdRh8eY4x0XFhEJtot0k-b7xTnWyzctoa-iZ31TWFWlgmt_EA/formResponse';
+
+            const iframe = document.createElement('iframe');
+            iframe.name = 'hidden_submit';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+
+            const hiddenForm = document.createElement('form');
+            hiddenForm.method = 'POST';
+            hiddenForm.action = submitUrl;
+            hiddenForm.target = 'hidden_submit';
+            hiddenForm.style.display = 'none';
+            Object.entries(fields).forEach(([k, v]) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = k;
+                input.value = v;
+                hiddenForm.appendChild(input);
             });
+            document.body.appendChild(hiddenForm);
+            hiddenForm.submit();
 
-            // 4. 모바일 백그라운드 전송 생존 보장형 Fetch API 실행 (keepalive: true 추가 장착)
-            try {
-                await fetch('https://docs.google.com/forms/d/e/1FAIpQLSdRh8eY4x0XFhEJtot0k-b7xTnWyzctoa-iZ31TWFWlgmt_EA/formResponse', {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: params,
-                    keepalive: true // 사용자가 탭을 즉시 닫거나 모바일 화면을 넘겨도 백그라운드 전송 완료 보장!
-                });
-                
-                // 모바일 무선 전송 지연을 메우기 위해 600ms의 안전 버퍼 타임아웃 부여 후 화면 전환
-                setTimeout(() => {
-                    handleSuccessTransition();
-                }, 600);
-
-            } catch (e) {
-                console.error("Fetch POST submit failed, executing safe native submit backup:", e);
-                
-                // iframe 전송 보호막 세팅
-                let historyInput = form.querySelector('input[name="pageHistory"]');
-                if (!historyInput) {
-                    historyInput = document.createElement('input');
-                    historyInput.type = 'hidden';
-                    historyInput.name = 'pageHistory';
-                    form.appendChild(historyInput);
-                }
-                historyInput.value = pageHistory;
-
-                form.submit();
-                
-                setTimeout(() => {
-                    handleSuccessTransition();
-                }, 1200);
-            }
-        }
-
-        function handleFormFileMetadata() {
-            updateFormFileMetadata();
+            handleSuccessTransition();
         }
 
         function updateFormFileMetadata() {
             const metaInput = document.getElementById('input-media-link');
             if (!metaInput) return;
             if (uploadedFiles.length === 0) {
-                metaInput.value = "첨부파일 없음"; // 구글 폼 필수 설정 오류를 방지하기 위해 빈 값이 아닌 디폴트 텍스트 바인딩
+                metaInput.value = "첨부파일 없음";
                 metaInput.classList.remove('border-red-500');
             } else {
                 const fileUrls = uploadedFiles
@@ -1731,34 +1591,20 @@
             updateProgress();
         }
 
-        function handleIframeOnload() {
-            if (submitted) {
-                handleSuccessTransition();
-            }
-        }
-
         function handleSuccessTransition() {
-            if (successTransitioned) return; // 중복 실행 방지
+            if (successTransitioned) return;
             successTransitioned = true;
             document.getElementById('formContainer').classList.add('hidden');
             document.getElementById('successScreen').classList.remove('hidden');
+            // 뒤로가기로 폼으로 돌아가지 못하도록 history 교체
+            history.replaceState(null, '', location.href);
+            window.onpopstate = function() {
+                history.pushState(null, '', location.href);
+            };
         }
 
-        // 프로세스 안전 종료 및 네이티브 브라우저 창 닫기 트리거 (웹뷰 환경 대응 패치 완료)
         function terminateProcess() {
-            try {
-                window.open('', '_self', '');
-                window.close();
-            } catch (e) {
-                console.log("Standard window.close() blocked by client sandbox.");
-            }
-
-            try {
-                window.close();
-            } catch (e) {
-                console.log("Backup close execution.");
-            }
-            
+            try { window.open('', '_self', ''); window.close(); } catch (e) {}
             setTimeout(() => {
                 const successScreen = document.getElementById('successScreen');
                 if (successScreen) {
@@ -1781,19 +1627,16 @@
             uploadedFiles = [];
             renderFileList();
             updateFormFileMetadata();
-            
+
             document.getElementById('hironicCustomForm').reset();
-            
+
             const oldPlaceholders = document.querySelectorAll('.submission-placeholder');
             oldPlaceholders.forEach(el => el.remove());
 
             const allInputs = document.getElementById('hironicCustomForm').querySelectorAll('input, textarea');
             allInputs.forEach(i => {
-                if (i.id !== 'etc-eq' && i.id !== 'etc-cart' && i.id !== 'etc-hp' && i.id !== 'etc-tip' && i.id !== 'etc-demo') {
-                    i.disabled = false;
-                } else {
-                    i.disabled = true;
-                }
+                const isEtc = ['etc-eq', 'etc-cart', 'etc-hp', 'etc-tip', 'etc-demo'].includes(i.id);
+                i.disabled = isEtc;
                 i.classList.remove('border-red-500');
             });
             document.getElementById('input-detailed-text').classList.remove('border-red-500');
@@ -1807,7 +1650,6 @@
 
             document.getElementById('successScreen').classList.add('hidden');
             document.getElementById('formContainer').classList.remove('hidden');
-            
             goToStep1();
         }
 
