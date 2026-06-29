@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>HIRONIC 서비스 접수 Systems</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -38,6 +38,10 @@
         }
     </script>
     <style>
+        html, body {
+            overflow-x: hidden;
+            max-width: 100%;
+        }
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
         }
