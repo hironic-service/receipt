@@ -715,15 +715,16 @@
             <div class="w-20 h-20 bg-hironic-goldLight rounded-full flex items-center justify-center text-hironic-goldDark text-3xl mb-6 shadow-sm">
                 <i class="fa-solid fa-check-double"></i>
             </div>
-            <!-- 요청 문양에 맞게 제목 수정 -->
             <h2 class="text-2xl md:text-3xl font-black text-hironic-charcoal mb-3">서비스 접수가 완료되었습니다.</h2>
             <p class="text-gray-500 max-w-md mx-auto mb-8 text-sm leading-relaxed">
                 보내주신 접수 내역을 확인한 엔지니어가 신속하게 세부 장비 이력을 검토한 후, 조속한 기일 내에 유선 연락 및 현장 일정을 확정해 드리겠습니다.
             </p>
-            <!-- 요청 문양에 맞게 닫기 액션으로 버튼 교체 -->
             <button onclick="terminateProcess()" class="px-10 py-3 bg-[#c7a66b] text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-hironic-goldDark transition-colors shadow-sm select-none">
                 닫기
             </button>
+            <p id="close-guide" class="hidden text-gray-400 text-xs mt-4 leading-relaxed">
+                상단의 X 버튼을 눌러 창을 닫아주세요.
+            </p>
         </div>
 
     </div>
@@ -1013,7 +1014,7 @@
                 }
             ];
 
-            async function tryUpload(serverIndex) {
+            async function tryUpload(serverIndex, retryCount = 0) {
                 if (serverIndex >= uploadServers.length) {
                     throw new Error('All upload servers failed');
                 }
@@ -1026,6 +1027,7 @@
                     try {
                         const xhr = new XMLHttpRequest();
                         xhr.open('POST', server.url, true);
+                        xhr.timeout = 30000; // 30초 타임아웃
 
                         xhr.upload.onprogress = function(e) {
                             if (e.lengthComputable) {
@@ -1044,15 +1046,41 @@
                                     const downloadUrl = server.parseResponse(xhr.responseText);
                                     resolve(downloadUrl);
                                 } catch (err) {
-                                    reject(err);
+                                    if (retryCount < 2) {
+                                        tryUpload(serverIndex, retryCount + 1).then(resolve).catch(reject);
+                                    } else {
+                                        reject(err);
+                                    }
                                 }
                             } else {
-                                reject(new Error(`Server returned status ${xhr.status}`));
+                                if (retryCount < 2) {
+                                    setTimeout(() => {
+                                        tryUpload(serverIndex, retryCount + 1).then(resolve).catch(reject);
+                                    }, 1000);
+                                } else {
+                                    reject(new Error(`Server returned status ${xhr.status}`));
+                                }
                             }
                         };
 
                         xhr.onerror = function() {
-                            reject(new Error('Network error'));
+                            if (retryCount < 2) {
+                                setTimeout(() => {
+                                    tryUpload(serverIndex, retryCount + 1).then(resolve).catch(reject);
+                                }, 1000);
+                            } else {
+                                reject(new Error('Network error'));
+                            }
+                        };
+
+                        xhr.ontimeout = function() {
+                            if (retryCount < 2) {
+                                setTimeout(() => {
+                                    tryUpload(serverIndex, retryCount + 1).then(resolve).catch(reject);
+                                }, 1000);
+                            } else {
+                                reject(new Error('Timeout'));
+                            }
                         };
 
                         xhr.send(formData);
@@ -1547,27 +1575,24 @@
             else if (productType === "팁 or 노즐") pageHistory = '0,4,5,6';
             fields['pageHistory'] = pageHistory;
 
-            const submitUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdRh8eY4x0XFhEJtot0k-b7xTnWyzctoa-iZ31TWFWlgmt_EA/formResponse';
+            const productGroup = fields['entry.478248741'] || fields['entry.2022084396'] || fields['entry.1206119229'] || fields['entry.284306670'] || '-';
+            const productName = fields['entry.1338509668'] || fields['entry.186327438'] || fields['entry.60920181'] || fields['entry.890467631'] || '-';
+            const serial = fields['entry.137691596'] || fields['entry.2112091891'] || fields['entry.2086382309'] || fields['entry.769820055'] || '-';
+            const usage = fields['entry.611804549'] || fields['entry.1226825078'] || fields['entry.988708164'] || fields['entry.602978248'] || '-';
 
-            const iframe = document.createElement('iframe');
-            iframe.name = 'hidden_submit';
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
+            // 앱스 스크립트로 전송 (시트 기록 + 구글 폼 + 챗 알림 모두 처리)
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbwwfW5jGyPWTj3NDM9IDHYDT2a8IUyJ1QUWlbXpeSpmtjhkeht04dFl_AbN-vcsYZMi/exec';
 
-            const hiddenForm = document.createElement('form');
-            hiddenForm.method = 'POST';
-            hiddenForm.action = submitUrl;
-            hiddenForm.target = 'hidden_submit';
-            hiddenForm.style.display = 'none';
-            Object.entries(fields).forEach(([k, v]) => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = k;
-                input.value = v;
-                hiddenForm.appendChild(input);
-            });
-            document.body.appendChild(hiddenForm);
-            hiddenForm.submit();
+            fetch(scriptUrl, {
+                method: 'POST',
+                body: JSON.stringify({
+                    fields: fields,
+                    productGroup: productGroup,
+                    productName: productName,
+                    serial: serial,
+                    usage: usage
+                })
+            }).catch(() => {});
 
             handleSuccessTransition();
         }
@@ -1610,19 +1635,11 @@
         function terminateProcess() {
             try { window.open('', '_self', ''); window.close(); } catch (e) {}
             setTimeout(() => {
-                const successScreen = document.getElementById('successScreen');
-                if (successScreen) {
-                    successScreen.innerHTML = `
-                        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-3xl mb-6 shadow-sm fade-in">
-                            <i class="fa-solid fa-power-off"></i>
-                        </div>
-                        <h2 class="text-2xl md:text-3xl font-black text-gray-400 mb-3 fade-in">접수 프로세스가 완전히 종료되었습니다.</h2>
-                        <p class="text-gray-500 max-w-md mx-auto mb-4 text-sm leading-relaxed fade-in">
-                            스마트폰 브라우저의 뒤로가기 버튼 또는 상단의 [X] 버튼을 눌러 안전하게 창을 나가주시기 바랍니다.
-                        </p>
-                    `;
+                if (!window.closed) {
+                    const guide = document.getElementById('close-guide');
+                    if (guide) guide.classList.remove('hidden');
                 }
-            }, 100);
+            }, 300);
         }
 
         function resetForm() {
