@@ -959,43 +959,17 @@
         }
 
         async function uploadFileToCloud(fileObj) {
+            // 파일을 즉시 업로드하지 않고 Base64로 변환만 해둠
             try {
-                // 파일을 Base64로 변환
                 const base64 = await readFileAsDataURL(fileObj.file);
-                const base64Data = base64.split(',')[1];
-
-                // 진행률 표시
                 const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
                 if (fileIndex !== -1) {
-                    uploadedFiles[fileIndex].progress = 50;
+                    uploadedFiles[fileIndex].status = 'success';
+                    uploadedFiles[fileIndex].base64 = base64.split(',')[1];
+                    uploadedFiles[fileIndex].url = '제출 시 업로드';
+                    uploadedFiles[fileIndex].progress = 100;
                     renderFileList();
-                }
-
-                // 앱스 스크립트로 파일 전송
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycbwwfW5jGyPWTj3NDM9IDHYDT2a8IUyJ1QUWlbXpeSpmtjhkeht04dFl_AbN-vcsYZMi/exec';
-                const response = await fetch(scriptUrl, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        type: 'fileUpload',
-                        fileName: fileObj.name,
-                        mimeType: fileObj.type,
-                        base64Data: base64Data
-                    })
-                });
-
-                const result = await response.json();
-
-                if (result.url) {
-                    const idx = uploadedFiles.findIndex(f => f.id === fileObj.id);
-                    if (idx !== -1) {
-                        uploadedFiles[idx].status = 'success';
-                        uploadedFiles[idx].url = result.url;
-                        uploadedFiles[idx].progress = 100;
-                        renderFileList();
-                        updateFormFileMetadata();
-                    }
-                } else {
-                    throw new Error('No URL returned');
+                    updateFormFileMetadata();
                 }
             } catch (error) {
                 const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
@@ -1097,15 +1071,10 @@
                         </div>
                     `;
                 } else if (file.status === 'success') {
-                    const isLocal = file.url.startsWith('blob:') || file.url.startsWith('data:') || file.url === "로컬 이미지 첨부 완료";
-                    const label = isLocal ? "임시 로컬 연동 완료" : "클라우드 연동 완료";
                     statusHTML = `
                         <div class="flex items-center gap-2 text-xs text-green-600 font-semibold">
                             <i class="fa-solid fa-circle-check"></i>
-                            <span>${label}</span>
-                            <a href="${file.url}" target="_blank" class="hover:underline text-[11px] flex items-center gap-1 text-hironic-gold font-bold ml-1">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i> 사진 보기
-                            </a>
+                            <span>첨부 완료 (제출 시 업로드)</span>
                         </div>
                     `;
                 } else {
@@ -1470,14 +1439,25 @@
             // 앱스 스크립트로 전송 (시트 기록 + 구글 폼 + 챗 알림 모두 처리)
             const scriptUrl = 'https://script.google.com/macros/s/AKfycbwwfW5jGyPWTj3NDM9IDHYDT2a8IUyJ1QUWlbXpeSpmtjhkeht04dFl_AbN-vcsYZMi/exec';
 
+            const files = uploadedFiles
+                .filter(f => f.status === 'success' && f.base64)
+                .map(f => ({
+                    fileName: f.name,
+                    mimeType: f.type,
+                    base64Data: f.base64
+                }));
+
             fetch(scriptUrl, {
                 method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({
                     fields: fields,
                     productGroup: productGroup,
                     productName: productName,
                     serial: serial,
-                    usage: usage
+                    usage: usage,
+                    files: files
                 })
             }).catch(() => {});
 
