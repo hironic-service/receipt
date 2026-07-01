@@ -1436,9 +1436,7 @@
             const serial = fields['entry.137691596'] || fields['entry.2112091891'] || fields['entry.2086382309'] || fields['entry.769820055'] || '-';
             const usage = fields['entry.611804549'] || fields['entry.1226825078'] || fields['entry.988708164'] || fields['entry.602978248'] || '-';
 
-            // 앱스 스크립트로 전송 (시트 기록 + 구글 폼 + 챗 알림 모두 처리)
             const scriptUrl = 'https://script.google.com/macros/s/AKfycbwwfW5jGyPWTj3NDM9IDHYDT2a8IUyJ1QUWlbXpeSpmtjhkeht04dFl_AbN-vcsYZMi/exec';
-
             const files = uploadedFiles
                 .filter(f => f.status === 'success' && f.base64)
                 .map(f => ({
@@ -1447,10 +1445,10 @@
                     base64Data: f.base64
                 }));
 
+            // 앱스 스크립트로 전송 (시트 기록 + 구글 폼 + 챗 알림)
             fetch(scriptUrl, {
                 method: 'POST',
                 mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({
                     fields: fields,
                     productGroup: productGroup,
@@ -1460,6 +1458,32 @@
                     files: files
                 })
             }).catch(() => {});
+
+            // iframe 폼 제출 (로컬 환경 폴백 + 구글 폼 기록 보장)
+            const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdRh8eY4x0XFhEJtot0k-b7xTnWyzctoa-iZ31TWFWlgmt_EA/formResponse';
+            let iframe = document.getElementById('hidden_submit_frame');
+            if (!iframe) {
+                iframe = document.createElement('iframe');
+                iframe.id = 'hidden_submit_frame';
+                iframe.name = 'hidden_submit';
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+            }
+            const hiddenForm = document.createElement('form');
+            hiddenForm.method = 'POST';
+            hiddenForm.action = formUrl;
+            hiddenForm.target = 'hidden_submit';
+            hiddenForm.style.display = 'none';
+            Object.entries(fields).forEach(([k, v]) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = k;
+                input.value = v;
+                hiddenForm.appendChild(input);
+            });
+            document.body.appendChild(hiddenForm);
+            hiddenForm.submit();
+            setTimeout(() => { document.body.removeChild(hiddenForm); }, 3000);
 
             handleSuccessTransition();
         }
