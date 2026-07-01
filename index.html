@@ -959,169 +959,15 @@
         }
 
         async function uploadFileToCloud(fileObj) {
-            const uploadServers = [
-                {
-                    name: 'platzi',
-                    url: 'https://api.escuelajs.co/api/v1/files/upload',
-                    fileParam: 'file',
-                    parseResponse: (text) => {
-                        const res = JSON.parse(text);
-                        if (res.location) {
-                            return res.location;
-                        }
-                        throw new Error('Platzi invalid response');
-                    }
-                },
-                {
-                    name: 'tmpfiles',
-                    url: 'https://tmpfiles.org/api/v1/upload',
-                    fileParam: 'file',
-                    parseResponse: (text) => {
-                        const res = JSON.parse(text);
-                        if (res.status === 'success' && res.data && res.data.url) {
-                            let url = res.data.url;
-                            if (url.includes('tmpfiles.org/')) {
-                                url = url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
-                            }
-                            return url;
-                        }
-                        throw new Error('Tmpfiles invalid response');
-                    }
-                },
-                {
-                    name: 'pixeldrain',
-                    url: 'https://pixeldrain.com/api/file',
-                    fileParam: 'file',
-                    parseResponse: (text) => {
-                        const res = JSON.parse(text);
-                        if (res.success && res.id) {
-                            return `https://pixeldrain.com/api/file/${res.id}`;
-                        }
-                        throw new Error('Pixeldrain invalid response');
-                    }
-                },
-                {
-                    name: 'fileio',
-                    url: 'https://file.io',
-                    fileParam: 'file',
-                    parseResponse: (text) => {
-                        const res = JSON.parse(text);
-                        if (res.success && res.link) {
-                            return res.link;
-                        }
-                        throw new Error('File.io invalid response');
-                    }
-                }
-            ];
-
-            async function tryUpload(serverIndex, retryCount = 0) {
-                if (serverIndex >= uploadServers.length) {
-                    throw new Error('All upload servers failed');
-                }
-
-                const server = uploadServers[serverIndex];
-                const formData = new FormData();
-                formData.append(server.fileParam, fileObj.file);
-
-                return new Promise((resolve, reject) => {
-                    try {
-                        const xhr = new XMLHttpRequest();
-                        xhr.open('POST', server.url, true);
-                        xhr.timeout = 30000; // 30초 타임아웃
-
-                        xhr.upload.onprogress = function(e) {
-                            if (e.lengthComputable) {
-                                const percentComplete = Math.round((e.loaded / e.total) * 100);
-                                const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
-                                if (fileIndex !== -1) {
-                                    uploadedFiles[fileIndex].progress = percentComplete;
-                                    renderFileList();
-                                }
-                            }
-                        };
-
-                        xhr.onload = function() {
-                            if (xhr.status === 200 || xhr.status === 201) {
-                                try {
-                                    const downloadUrl = server.parseResponse(xhr.responseText);
-                                    resolve(downloadUrl);
-                                } catch (err) {
-                                    if (retryCount < 2) {
-                                        tryUpload(serverIndex, retryCount + 1).then(resolve).catch(reject);
-                                    } else {
-                                        reject(err);
-                                    }
-                                }
-                            } else {
-                                if (retryCount < 2) {
-                                    setTimeout(() => {
-                                        tryUpload(serverIndex, retryCount + 1).then(resolve).catch(reject);
-                                    }, 1000);
-                                } else {
-                                    reject(new Error(`Server returned status ${xhr.status}`));
-                                }
-                            }
-                        };
-
-                        xhr.onerror = function() {
-                            if (retryCount < 2) {
-                                setTimeout(() => {
-                                    tryUpload(serverIndex, retryCount + 1).then(resolve).catch(reject);
-                                }, 1000);
-                            } else {
-                                reject(new Error('Network error'));
-                            }
-                        };
-
-                        xhr.ontimeout = function() {
-                            if (retryCount < 2) {
-                                setTimeout(() => {
-                                    tryUpload(serverIndex, retryCount + 1).then(resolve).catch(reject);
-                                }, 1000);
-                            } else {
-                                reject(new Error('Timeout'));
-                            }
-                        };
-
-                        xhr.send(formData);
-                    } catch (xhrError) {
-                        reject(xhrError);
-                    }
-                });
-            }
-
+            // 파일을 즉시 업로드하지 않고 Base64로 변환만 해둠
             try {
-                let finalUrl = "";
-                try {
-                    finalUrl = await tryUpload(0); // Platzi
-                } catch (e0) {
-                    try {
-                        finalUrl = await tryUpload(1); // tmpfiles
-                    } catch (e1) {
-                        try {
-                            finalUrl = await tryUpload(2); // pixeldrain
-                        } catch (e2) {
-                            try {
-                                finalUrl = await tryUpload(3); // file.io
-                            } catch (e3) {
-                                try {
-                                    finalUrl = URL.createObjectURL(fileObj.file);
-                                } catch (e4) {
-                                    try {
-                                        finalUrl = await readFileAsDataURL(fileObj.file);
-                                    } catch (e5) {
-                                        finalUrl = "로컬 이미지 첨부 완료";
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
+                const base64 = await readFileAsDataURL(fileObj.file);
                 const fileIndex = uploadedFiles.findIndex(f => f.id === fileObj.id);
                 if (fileIndex !== -1) {
                     uploadedFiles[fileIndex].status = 'success';
-                    uploadedFiles[fileIndex].url = finalUrl;
+                    uploadedFiles[fileIndex].base64 = base64.split(',')[1];
+                    uploadedFiles[fileIndex].url = '제출 시 업로드';
+                    uploadedFiles[fileIndex].progress = 100;
                     renderFileList();
                     updateFormFileMetadata();
                 }
@@ -1225,15 +1071,10 @@
                         </div>
                     `;
                 } else if (file.status === 'success') {
-                    const isLocal = file.url.startsWith('blob:') || file.url.startsWith('data:') || file.url === "로컬 이미지 첨부 완료";
-                    const label = isLocal ? "임시 로컬 연동 완료" : "클라우드 연동 완료";
                     statusHTML = `
                         <div class="flex items-center gap-2 text-xs text-green-600 font-semibold">
                             <i class="fa-solid fa-circle-check"></i>
-                            <span>${label}</span>
-                            <a href="${file.url}" target="_blank" class="hover:underline text-[11px] flex items-center gap-1 text-hironic-gold font-bold ml-1">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i> 사진 보기
-                            </a>
+                            <span>첨부 완료 (제출 시 업로드)</span>
                         </div>
                     `;
                 } else {
@@ -1517,6 +1358,21 @@
                 btnSubmit.innerHTML = `전송 중... <i class="fa-solid fa-circle-notch animate-spin text-xs"></i>`;
             }
 
+            // 업로드 중인 파일이 있으면 완료될 때까지 대기
+            const waitForUploads = () => new Promise(resolve => {
+                const check = () => {
+                    const isUploading = uploadedFiles.some(f => f.status === 'uploading');
+                    if (!isUploading) {
+                        resolve();
+                    } else {
+                        setTimeout(check, 500);
+                    }
+                };
+                check();
+            });
+            await waitForUploads();
+            updateFormFileMetadata();
+
             submitted = true;
 
             const form = document.getElementById('hironicCustomForm');
@@ -1580,19 +1436,54 @@
             const serial = fields['entry.137691596'] || fields['entry.2112091891'] || fields['entry.2086382309'] || fields['entry.769820055'] || '-';
             const usage = fields['entry.611804549'] || fields['entry.1226825078'] || fields['entry.988708164'] || fields['entry.602978248'] || '-';
 
-            // 앱스 스크립트로 전송 (시트 기록 + 구글 폼 + 챗 알림 모두 처리)
             const scriptUrl = 'https://script.google.com/macros/s/AKfycbwwfW5jGyPWTj3NDM9IDHYDT2a8IUyJ1QUWlbXpeSpmtjhkeht04dFl_AbN-vcsYZMi/exec';
+            const files = uploadedFiles
+                .filter(f => f.status === 'success' && f.base64)
+                .map(f => ({
+                    fileName: f.name,
+                    mimeType: f.type,
+                    base64Data: f.base64
+                }));
 
+            // 앱스 스크립트로 전송 (시트 기록 + 구글 폼 + 챗 알림)
             fetch(scriptUrl, {
                 method: 'POST',
+                mode: 'no-cors',
                 body: JSON.stringify({
                     fields: fields,
                     productGroup: productGroup,
                     productName: productName,
                     serial: serial,
-                    usage: usage
+                    usage: usage,
+                    files: files
                 })
             }).catch(() => {});
+
+            // iframe 폼 제출 (로컬 환경 폴백 + 구글 폼 기록 보장)
+            const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdRh8eY4x0XFhEJtot0k-b7xTnWyzctoa-iZ31TWFWlgmt_EA/formResponse';
+            let iframe = document.getElementById('hidden_submit_frame');
+            if (!iframe) {
+                iframe = document.createElement('iframe');
+                iframe.id = 'hidden_submit_frame';
+                iframe.name = 'hidden_submit';
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+            }
+            const hiddenForm = document.createElement('form');
+            hiddenForm.method = 'POST';
+            hiddenForm.action = formUrl;
+            hiddenForm.target = 'hidden_submit';
+            hiddenForm.style.display = 'none';
+            Object.entries(fields).forEach(([k, v]) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = k;
+                input.value = v;
+                hiddenForm.appendChild(input);
+            });
+            document.body.appendChild(hiddenForm);
+            hiddenForm.submit();
+            setTimeout(() => { document.body.removeChild(hiddenForm); }, 3000);
 
             handleSuccessTransition();
         }
