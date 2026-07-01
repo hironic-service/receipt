@@ -1618,7 +1618,7 @@
             } else {
                 const fileUrls = uploadedFiles
                     .filter(f => f.status === 'success' && f.url)
-                    .map((f, idx) => `${idx + 1}. [사진다운로드] ${f.url}`);
+                    .map((f, idx) => `${idx + 1}. ${f.url}`);
                 
                 const uploadingCount = uploadedFiles.filter(f => f.status === 'uploading').length;
                 let finalVal = fileUrls.join(" \n");
